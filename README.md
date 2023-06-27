@@ -1,0 +1,1 @@
+# Newsware Typescript Client
