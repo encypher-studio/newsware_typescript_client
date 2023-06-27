@@ -1,0 +1,21 @@
+{
+  "include": ["./src/**/*", "test"],
+  "compilerOptions": {
+    "outDir": "lib",
+    "target": "es6",
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitReturns": true,
+    "noErrorTruncation": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "preserveConstEnums": true,
+    "removeComments": false,
+    "sourceMap": true,
+    "strict": true,
+    "declaration": true,
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "baseUrl": "./src"
+  }
+}
