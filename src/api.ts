@@ -18,7 +18,7 @@ export class Api {
             apiKey: this.apiKey,
             filter: JSON.stringify(filter)
         })
-        const socket = new IsoWebsocket(`ws://${this.host}/v1/ws/news&${urlParams.toString()}`)
+        const socket = new IsoWebsocket(`${this.host}/v1/ws/news&${urlParams.toString()}`)
 
         socket.onmessage = (event: MessageEvent) => {
             console.log("Message received: ", event.data)

@@ -42,6 +42,6 @@ export enum QueryType {
 }
 
 export enum ApiHost {
-    Localhost = "localhost:8080",
-    Production = "198.6.19.69:9949"
+    Localhost = "ws://localhost:8080",
+    Production = "wss://198.6.19.69:9949"
 }
