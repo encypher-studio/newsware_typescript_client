@@ -28,8 +28,9 @@ export class Or implements Query {
 
 export class Text implements Query {
     constructor(
-        private value: TextQuery
+        private readonly value: TextQuery
     ) {
+        this.value = {... textQueryDefaults, ... this.value}
     }
 
     toJSON(): QueryDto {
@@ -38,4 +39,12 @@ export class Text implements Query {
             value: this.value
         }
     }
+}
+
+const textQueryDefaults: TextQuery = {
+    ignore: false,
+    isRegex: false,
+    searchBody: true,
+    searchHeadline: true,
+    text: ""
 }

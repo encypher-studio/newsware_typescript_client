@@ -1,6 +1,6 @@
 export interface Filter {
-    query: Query
-    tickers: string[]
+    query?: Query
+    tickers?: string[]
 }
 
 export interface News {
@@ -15,11 +15,11 @@ export interface News {
 }
 
 export interface TextQuery {
-    searchBody: boolean
-    searchHeadline: boolean
-    isRegex: boolean,
+    searchBody?: boolean
+    searchHeadline?: boolean
+    isRegex?: boolean,
     text: string,
-    ignore: boolean
+    ignore?: boolean
 }
 
 export type QueryDto =
