@@ -1,4 +1,5 @@
 import {ApiHost, Filter, News} from "./types";
+import {CloseEvent, ErrorEvent, MessageEvent, WebSocket as IsoWebsocket} from "isomorphic-ws"
 
 export class Api {
     constructor(
@@ -10,27 +11,27 @@ export class Api {
     subscribe = (
         filter: Filter,
         callback: (news: News) => void,
-        errorCallback?: (event: Event) => void,
-        closeCallback?: (event: Event) => void
+        errorCallback?: (errorEvent: ErrorEvent) => void,
+        closeCallback?: (closeEvent: CloseEvent) => void
     ) => {
         const urlParams = new URLSearchParams({
             apiKey: this.apiKey,
             filter: JSON.stringify(filter)
         })
-        const socket = new WebSocket(`ws://${this.host}/v1/ws/news&${urlParams.toString()}`)
+        const socket = new IsoWebsocket(`ws://${this.host}/v1/ws/news&${urlParams.toString()}`)
 
-        socket.onmessage = (event) => {
-            console.log("Message received: ", event)
-            callback(JSON.parse(event.data) as News)
+        socket.onmessage = (event: MessageEvent) => {
+            console.log("Message received: ", event.data)
+            callback(JSON.parse(event.data.toString()) as News)
         }
 
-        socket.onerror = (event) => {
+        socket.onerror = (event: ErrorEvent) => {
             console.log("Websocket error: ", event)
             if (!errorCallback) this.subscribe(filter, callback, errorCallback)
             else errorCallback(event)
         }
 
-        socket.onclose = (event) => {
+        socket.onclose = (event: CloseEvent) => {
             console.log("Connection closed")
             if (closeCallback) closeCallback(event)
         }
