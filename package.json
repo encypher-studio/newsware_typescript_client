@@ -1,6 +1,6 @@
 {
   "name": "newsware",
-  "version": "0.1.0",
+  "version": "0.1.5",
   "description": "Typescript client for interacting with the Newsware API",
   "main": "lib/index.js",
   "files": [
@@ -10,7 +10,8 @@
   "scripts": {
     "prepare": "npm run build",
     "build": "tsc -p tsconfig.build.json",
-    "bundle": "browserify lib/index.js -o lib/bundle.js"
+    "bundle": "browserify lib/index.js -o lib/bundle.js",
+    "publish-package": "npm run build && npm publish"
   },
   "repository": {
     "type": "git",
