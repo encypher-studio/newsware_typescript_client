@@ -9,7 +9,7 @@ export class And implements Query {
     toJSON(): QueryDto {
         return {
             type: QueryType.And,
-            value: this.value.map(v => v.toJSON())
+            query: this.value.map(v => v.toJSON())
         }
     }
 }
@@ -21,7 +21,7 @@ export class Or implements Query {
     toJSON(): QueryDto {
         return {
             type: QueryType.Or,
-            value: this.value.map(v => v.toJSON())
+            query: this.value.map(v => v.toJSON())
         }
     }
 }
@@ -36,7 +36,7 @@ export class Text implements Query {
     toJSON(): QueryDto {
         return {
             type: QueryType.Text,
-            value: this.value
+            query: this.value
         }
     }
 }

@@ -3,7 +3,7 @@ import {CloseEvent, ErrorEvent, MessageEvent, WebSocket as IsoWebsocket} from "i
 
 export class Api {
     constructor(
-        private apiKey: string,
+        private apikey: string,
         private host: string = ApiHost.Production
     ) {
     }
@@ -15,19 +15,19 @@ export class Api {
         closeCallback?: (closeEvent: CloseEvent) => void
     ) => {
         const urlParams = new URLSearchParams({
-            apiKey: this.apiKey,
+            apikey: this.apikey,
             filter: JSON.stringify(filter)
         })
-        const socket = new IsoWebsocket(`${this.host}/v1/ws/news&${urlParams.toString()}`)
+        console.log(urlParams)
+        const socket = new IsoWebsocket(`${this.host}/v1/ws/news?${urlParams.toString()}`)
 
         socket.onmessage = (event: MessageEvent) => {
-            console.log("Message received: ", event.data)
             callback(JSON.parse(event.data.toString()) as News)
         }
 
         socket.onerror = (event: ErrorEvent) => {
             console.log("Websocket error: ", event)
-            if (!errorCallback) this.subscribe(filter, callback, errorCallback)
+            if (!errorCallback) return
             else errorCallback(event)
         }
 
