@@ -15,20 +15,20 @@ export interface News {
 }
 
 export interface TextQuery {
-    searchBody?: boolean
-    searchHeadline?: boolean
-    isRegex?: boolean,
     text: string,
-    ignore?: boolean
+    searchBody?: boolean // defaults to true
+    searchHeadline?: boolean // defaults to true
+    isRegex?: boolean, // defaults to false
+    ignore?: boolean // defaults to false
 }
 
 export type QueryDto =
     {
         type: QueryType.And | QueryType.Or,
-        value: QueryDto[]
+        query: QueryDto[]
     } | {
         type: QueryType.Text,
-        value: TextQuery
+        query: TextQuery
     };
 
 export interface Query {
@@ -43,5 +43,5 @@ export enum QueryType {
 
 export enum ApiHost {
     Localhost = "ws://localhost:8080",
-    Production = "wss://198.6.19.69:9949"
+    Production = "wss://newswareapi.encypherstudio.com"
 }
