@@ -4,6 +4,11 @@ export interface Filter {
     sources?: Source[]
 }
 
+export interface Response {
+    error: string;
+    data: News;
+}
+
 export interface News {
     id: string;
     source: string;

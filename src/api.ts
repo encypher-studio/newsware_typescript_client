@@ -1,4 +1,4 @@
-import {ApiHost, Filter, News} from "./types";
+import {ApiHost, Filter, News, Response} from "./types";
 import {CloseEvent, ErrorEvent, MessageEvent, WebSocket as IsoWebsocket} from "isomorphic-ws"
 
 export class Api {
@@ -22,13 +22,27 @@ export class Api {
         const socket = new IsoWebsocket(`${this.host}/v1/ws/news?${urlParams.toString()}`)
 
         socket.onmessage = (event: MessageEvent) => {
-            callback(JSON.parse(event.data.toString()) as News)
+            const response = JSON.parse(event.data.toString()) as Response
+            if (response.error && socket.onerror) {
+                socket.onerror({
+                    error: new Error(response.error),
+                    message: response.error,
+                    target: socket,
+                    type: "error"
+                })
+            } else
+                callback(response.data)
         }
 
         socket.onerror = (event: ErrorEvent) => {
-            console.log("Websocket error: ", event)
-            if (!errorCallback) return
-            else errorCallback(event)
+            if (event.message.includes('403')) console.log("Error: Not authorized, make sure your api key is correct and active")
+            else console.log("Websocket error: " + event.message)
+
+            if (errorCallback) errorCallback(event)
+        }
+
+        socket.onopen = () => {
+            console.log("Connection established, waiting for news")
         }
 
         socket.onclose = (event: CloseEvent) => {
