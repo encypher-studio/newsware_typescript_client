@@ -20,8 +20,11 @@ export interface News {
     timeServerRecordCreation: string;
 }
 
-export interface TextQuery {
-    text: string,
+export interface TextQuery extends TextOptions{
+    text: string
+}
+
+export interface TextOptions {
     searchBody?: boolean // defaults to true
     searchHeadline?: boolean // defaults to true
     isRegex?: boolean, // defaults to false
