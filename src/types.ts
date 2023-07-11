@@ -1,6 +1,7 @@
 export interface Filter {
     query?: Query
     tickers?: string[]
+    sources?: Source[]
 }
 
 export interface News {
@@ -44,4 +45,12 @@ export enum QueryType {
 export enum ApiHost {
     Localhost = "ws://localhost:8080",
     Production = "wss://newswareapi.encypherstudio.com"
+}
+
+export enum Source {
+    DowJones = "DJ",
+    AccessWire = "AR",
+    GlobeNewswire = "PZ",
+    PRNewswire = "PN",
+    BusinessWire = "BW"
 }
