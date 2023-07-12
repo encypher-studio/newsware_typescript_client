@@ -1,6 +1,18 @@
-import {Query, QueryDto, QueryType, TextQuery} from "./types";
+import {Query, QueryDto, QueryType, TextOptions, TextQuery} from "./types";
 
-export class And implements Query {
+export const and = (...queries: Query[]): Query => {
+    return new And(queries)
+}
+
+export const or = (...queries: Query[]): Query => {
+    return new Or(queries)
+}
+
+export const text = (text: string, options?: TextOptions): Query => {
+    return new Text({text, ...options})
+}
+
+class And implements Query {
     constructor(
         private value: Query[]
     ) {
@@ -14,7 +26,7 @@ export class And implements Query {
     }
 }
 
-export class Or implements Query {
+class Or implements Query {
     constructor(private value: Query[]) {
     }
 
@@ -26,11 +38,11 @@ export class Or implements Query {
     }
 }
 
-export class Text implements Query {
+class Text implements Query {
     constructor(
         private readonly value: TextQuery
     ) {
-        this.value = {... textQueryDefaults, ... this.value}
+        this.value = {...textQueryDefaults, ...this.value}
     }
 
     toJSON(): QueryDto {
