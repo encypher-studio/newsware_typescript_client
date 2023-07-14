@@ -21,7 +21,6 @@ export class Api {
             apikey: this.apikey,
             filter: JSON.stringify(filter)
         })
-        console.log(urlParams)
         this.socket = new WebSocket(`${this.host}/v1/ws/news?${urlParams.toString()}`)
 
         this.socket.onmessage = (event: MessageEvent) => {
@@ -42,17 +41,14 @@ export class Api {
                 event = {... event, message:  "Not authorized, make sure your api key is correct and active"}
             }
 
-            console.log("Websocket error: " + event.message)
             if (errorCallback) errorCallback(event)
         }
 
         this.socket.onopen = () => {
-            console.log("Connection established, waiting for news")
             if (openCallback) openCallback()
         }
 
         this.socket.onclose = (event: CloseEvent) => {
-            console.log("Connection closed")
             if (closeCallback) closeCallback(event)
         }
     }
