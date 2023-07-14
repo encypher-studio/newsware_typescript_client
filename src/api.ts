@@ -1,53 +1,63 @@
 import {ApiHost, Filter, News, Response} from "./types";
-import {CloseEvent, ErrorEvent, MessageEvent, WebSocket as IsoWebsocket} from "isomorphic-ws"
+import WebSocket, {CloseEvent, ErrorEvent, MessageEvent} from "isomorphic-ws"
 
 export class Api {
+    private socket?: WebSocket
+
     constructor(
         private apikey: string,
         private host: string = ApiHost.Production
     ) {
     }
 
-    subscribe = (
+    subscribe (
         filter: Filter,
         callback: (news: News) => void,
         errorCallback?: (errorEvent: ErrorEvent) => void,
+        openCallback?: () => void,
         closeCallback?: (closeEvent: CloseEvent) => void
-    ) => {
+    ) {
         const urlParams = new URLSearchParams({
             apikey: this.apikey,
             filter: JSON.stringify(filter)
         })
         console.log(urlParams)
-        const socket = new IsoWebsocket(`${this.host}/v1/ws/news?${urlParams.toString()}`)
+        this.socket = new WebSocket(`${this.host}/v1/ws/news?${urlParams.toString()}`)
 
-        socket.onmessage = (event: MessageEvent) => {
+        this.socket.onmessage = (event: MessageEvent) => {
             const response = JSON.parse(event.data.toString()) as Response
-            if (response.error && socket.onerror) {
-                socket.onerror({
-                    error: new Error(response.error),
-                    message: response.error,
-                    target: socket,
+            if (response.error && this.socket?.onerror) {
+                this.socket.onerror({
+                    error: new Error(response.error.message),
+                    message: response.error.message,
+                    target: this.socket,
                     type: "error"
                 })
             } else
                 callback(response.data)
         }
 
-        socket.onerror = (event: ErrorEvent) => {
-            if (event.message.includes('403')) console.log("Error: Not authorized, make sure your api key is correct and active")
-            else console.log("Websocket error: " + event.message)
+        this.socket.onerror = (event: ErrorEvent) => {
+            if (event.message?.includes('403')) {
+                event.message = "Not authorized, make sure your api key is correct and active"
+            }
 
+            console.log("Websocket error: " + event.message)
             if (errorCallback) errorCallback(event)
         }
 
-        socket.onopen = () => {
+        this.socket.onopen = () => {
             console.log("Connection established, waiting for news")
+            if (openCallback) openCallback()
         }
 
-        socket.onclose = (event: CloseEvent) => {
+        this.socket.onclose = (event: CloseEvent) => {
             console.log("Connection closed")
             if (closeCallback) closeCallback(event)
         }
+    }
+
+    unsubscribe() {
+        this.socket!!.close()
     }
 }

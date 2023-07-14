@@ -16,6 +16,7 @@
     "declaration": true,
     "module": "commonjs",
     "moduleResolution": "node",
-    "baseUrl": "./src"
+    "baseUrl": "./src",
+    "allowSyntheticDefaultImports": true
   }
 }
