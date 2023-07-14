@@ -1,0 +1,15 @@
+{
+  "name": "node",
+  "version": "1.0.0",
+  "description": "Example for subscribing to Newsware WS API using Node",
+  "main": "index.ts",
+  "scripts": {
+    "start": "ts-node index.ts"
+  },
+  "author": "Encypher Studio",
+  "license": "ISC",
+  "dependencies": {
+    "newsware": "../../",
+    "ts-node": "^10.9.1"
+  }
+}
