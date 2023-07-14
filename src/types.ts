@@ -5,8 +5,13 @@ export interface Filter {
 }
 
 export interface Response {
-    error: string;
+    error: ResponseError;
     data: News;
+}
+
+export interface ResponseError {
+    code: number;
+    message: string;
 }
 
 export interface News {
