@@ -60,7 +60,7 @@ function App() {
     }
 
     const subscribe = () => {
-        setApi(new Api(inputApikey, ApiHost.Localhost))
+        setApi(new Api(inputApikey))
     }
 
     const unsubscribe = () => {
