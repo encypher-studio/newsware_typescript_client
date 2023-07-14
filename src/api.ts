@@ -1,5 +1,5 @@
 import {ApiHost, Filter, News, Response} from "./types";
-import WebSocket, {CloseEvent, ErrorEvent, MessageEvent} from "isomorphic-ws"
+import WebSocket, {MessageEvent, ErrorEvent, CloseEvent} from "isomorphic-ws"
 
 export class Api {
     private socket?: WebSocket
@@ -39,7 +39,7 @@ export class Api {
 
         this.socket.onerror = (event: ErrorEvent) => {
             if (event.message?.includes('403')) {
-                event.message = "Not authorized, make sure your api key is correct and active"
+                event = {... event, message:  "Not authorized, make sure your api key is correct and active"}
             }
 
             console.log("Websocket error: " + event.message)
