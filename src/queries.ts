@@ -1,62 +1,29 @@
-import {Query, QueryDto, QueryType, TextOptions, TextQuery} from "./types";
+import {Query, TextOptions} from "./types";
 
 export const and = (...queries: Query[]): Query => {
-    return new And(queries)
+    return {
+        and: queries
+    }
 }
 
 export const or = (...queries: Query[]): Query => {
-    return new Or(queries)
+    return {
+        or: queries
+    }
 }
 
 export const text = (text: string, options?: TextOptions): Query => {
-    return new Text({text, ...options})
-}
-
-class And implements Query {
-    constructor(
-        private value: Query[]
-    ) {
-    }
-
-    toJSON(): QueryDto {
-        return {
-            type: QueryType.And,
-            query: this.value.map(v => v.toJSON())
+    return {
+        text: {
+            text: text,
+            ...textOptionsDefault,
+            ...options
         }
     }
 }
 
-class Or implements Query {
-    constructor(private value: Query[]) {
-    }
-
-    toJSON(): QueryDto {
-        return {
-            type: QueryType.Or,
-            query: this.value.map(v => v.toJSON())
-        }
-    }
-}
-
-class Text implements Query {
-    constructor(
-        private readonly value: TextQuery
-    ) {
-        this.value = {...textQueryDefaults, ...this.value}
-    }
-
-    toJSON(): QueryDto {
-        return {
-            type: QueryType.Text,
-            query: this.value
-        }
-    }
-}
-
-const textQueryDefaults: TextQuery = {
+const textOptionsDefault: TextOptions = {
     ignore: false,
-    isRegex: false,
     searchBody: true,
-    searchHeadline: true,
-    text: ""
+    searchHeadline: true
 }

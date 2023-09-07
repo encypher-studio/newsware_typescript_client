@@ -19,10 +19,10 @@ export interface News {
     source: string;
     tickers: string[];
     headline: string;
-    text: string;
-    publishedAt: string;
-    timeServerReceivedAt: string;
-    timeServerRecordCreation: string;
+    body: string;
+    publicationTime: string;
+    receivedTime: string;
+    creationTime: string;
 }
 
 export interface TextQuery extends TextOptions{
@@ -36,17 +36,10 @@ export interface TextOptions {
     ignore?: boolean // defaults to false
 }
 
-export type QueryDto =
-    {
-        type: QueryType.And | QueryType.Or,
-        query: QueryDto[]
-    } | {
-        type: QueryType.Text,
-        query: TextQuery
-    };
-
 export interface Query {
-    toJSON(): QueryDto
+    and?: Query[]
+    or?: Query[]
+    text?: TextQuery
 }
 
 export enum QueryType {
