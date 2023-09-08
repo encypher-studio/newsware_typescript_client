@@ -1,8 +1,7 @@
 import React, {useEffect, useState} from "react";
 import "./App.css";
-import {Api, ApiHost, News} from "newsware";
+import {Api, News} from "newsware";
 import {toast, ToastContainer} from "react-toastify";
-import {flushSync} from "react-dom";
 
 function App() {
     const columns = ["Source", "Time", "Headline", "Body"]
@@ -16,9 +15,11 @@ function App() {
     useEffect(() => {
         if (api && !isSubscribed)
             api!!.subscribe(
-                {},
-                (receivedNews: News) => {
-                    setNews(prevState => [receivedNews, ...prevState])
+                {
+                    // Add filters here
+                },
+                (receivedNews: News[]) => {
+                    setNews(prevState => [...receivedNews, ...prevState])
                 },
                 () => {
                     setIsSubscribed(false)
@@ -43,12 +44,12 @@ function App() {
     }
 
     const renderNews = () => {
-        return news.map(({id, source, publishedAt, headline, text}) => {
+        return news.map(({id, source, publicationTime, headline, body}) => {
             return <tr key={id} style={{maxWidth: "100%"}}>
                 <td style={{...fieldStyle, width: "10%"}}>{source}</td>
-                <td style={{...fieldStyle, width: "20%"}}>{publishedAt}</td>
+                <td style={{...fieldStyle, width: "20%"}}>{publicationTime}</td>
                 <td style={{...fieldStyle, width: "30%"}}>{headline}</td>
-                <td style={{...fieldStyle, width: "40%"}}>{text}</td>
+                <td style={{...fieldStyle, width: "40%"}}>{body}</td>
             </tr>
         })
     }

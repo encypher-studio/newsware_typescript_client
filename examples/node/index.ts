@@ -11,7 +11,7 @@ function main() {
             // Add filters here
         },
         // On news received
-        (news: News) => {
+        (news: News[]) => {
             console.log(news)
         },
         // On error

@@ -6,7 +6,7 @@ export interface Filter {
 
 export interface Response {
     error: ResponseError;
-    data: News;
+    data: News[];
 }
 
 export interface ResponseError {
@@ -19,10 +19,10 @@ export interface News {
     source: string;
     tickers: string[];
     headline: string;
-    text: string;
-    publishedAt: string;
-    timeServerReceivedAt: string;
-    timeServerRecordCreation: string;
+    body: string;
+    publicationTime: string;
+    receivedTime: string;
+    creationTime: string;
 }
 
 export interface TextQuery extends TextOptions{
@@ -32,21 +32,13 @@ export interface TextQuery extends TextOptions{
 export interface TextOptions {
     searchBody?: boolean // defaults to true
     searchHeadline?: boolean // defaults to true
-    isRegex?: boolean, // defaults to false
     ignore?: boolean // defaults to false
 }
 
-export type QueryDto =
-    {
-        type: QueryType.And | QueryType.Or,
-        query: QueryDto[]
-    } | {
-        type: QueryType.Text,
-        query: TextQuery
-    };
-
 export interface Query {
-    toJSON(): QueryDto
+    and?: Query[]
+    or?: Query[]
+    text?: TextQuery
 }
 
 export enum QueryType {
