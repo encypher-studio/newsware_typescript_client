@@ -12,7 +12,7 @@ export class Api {
 
     subscribe (
         filter: Filter,
-        callback: (news: News) => void,
+        callback: (news: News[]) => void,
         errorCallback?: (errorEvent: ErrorEvent) => void,
         openCallback?: () => void,
         closeCallback?: (closeEvent: CloseEvent) => void

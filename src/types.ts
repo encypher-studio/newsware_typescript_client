@@ -6,7 +6,7 @@ export interface Filter {
 
 export interface Response {
     error: ResponseError;
-    data: News;
+    data: News[];
 }
 
 export interface ResponseError {
@@ -32,7 +32,6 @@ export interface TextQuery extends TextOptions{
 export interface TextOptions {
     searchBody?: boolean // defaults to true
     searchHeadline?: boolean // defaults to true
-    isRegex?: boolean, // defaults to false
     ignore?: boolean // defaults to false
 }
 
