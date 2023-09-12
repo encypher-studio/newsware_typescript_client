@@ -57,5 +57,6 @@ export enum Source {
     AccessWire = "AR",
     GlobeNewswire = "PZ",
     PRNewswire = "PN",
-    BusinessWire = "BW"
+    BusinessWire = "BW",
+    SEC = "SEC"
 }
