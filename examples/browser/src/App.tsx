@@ -16,24 +16,30 @@ function App() {
         if (api && !isSubscribed)
             api!!.subscribe(
                 {
-                    // Add filters here
+                    filter: {
+                        // Add filters here
+                    },
+                    // Handle received news
+                    callback: (receivedNews: News[]) => setNews(prevState => [...receivedNews, ...prevState]),
+                    // (Optional, default is true) If true, attempts to reconnect if connection is unexpectedly closed.
+                    automaticReconnect: true,
+                    // (Optional) Show error toasts
+                    errorCallback: () => {
+                        setIsSubscribed(false)
+                        toast.error("Error, check your apikey")
+                    },
+                    // (Optional) Show a toast when connection is opened
+                    openCallback: () => {
+                        setIsSubscribed(true)
+                        toast.success("Connected")
+                    },
+                    // (Optional) Show a toast when connection is closed
+                    closeCallback: () => {
+                        setIsSubscribed(false)
+                        setApi(undefined)
+                        toast.error("Connection closed")
+                    }
                 },
-                (receivedNews: News[]) => {
-                    setNews(prevState => [...receivedNews, ...prevState])
-                },
-                () => {
-                    setIsSubscribed(false)
-                    toast.error("Error, check your apikey")
-                },
-                () => {
-                    setIsSubscribed(true)
-                    toast.success("Connected")
-                },
-                () => {
-                    setIsSubscribed(false)
-                    setApi(undefined)
-                    toast.error("Connection closed")
-                }
             )
     }, [api])
 
