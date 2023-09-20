@@ -1,3 +1,5 @@
+import {CloseEvent, ErrorEvent} from "isomorphic-ws";
+
 export interface Filter {
     query?: Query
     tickers?: string[]
@@ -60,4 +62,13 @@ export enum Source {
     PRNewswire = "PN",
     BusinessWire = "BW",
     SEC = "SEC"
+}
+
+export interface SubscribeOptions {
+    filter: Filter,
+    callback: (news: News[]) => void,
+    errorCallback?: (errorEvent: ErrorEvent) => void,
+    openCallback?: () => void,
+    closeCallback?: (closeEvent: CloseEvent) => void,
+    automaticReconnect?: boolean
 }
