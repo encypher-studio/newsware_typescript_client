@@ -2,6 +2,7 @@ export interface Filter {
     query?: Query
     tickers?: string[]
     sources?: Source[]
+    ciks?: number[]
 }
 
 export interface Response {
