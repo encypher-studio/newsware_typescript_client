@@ -1,0 +1,86 @@
+[
+  {
+    "id": 6,
+    "headline": "6 6 6 6 6",
+    "body": "six six six six six",
+    "tickers": [
+      "ticker6",
+      "ticker61"
+    ],
+    "source": "source6",
+    "ciks": [
+      6
+    ],
+    "publicationTime": "1970-01-01T00:00:06.000Z"
+  },
+  {
+    "id": 5,
+    "headline": "5 5 5 5 5",
+    "body": "five five five five five",
+    "tickers": [
+      "ticker5",
+      "ticker51"
+    ],
+    "source": "source5",
+    "ciks": [
+      5
+    ],
+    "publicationTime": "1970-01-01T00:00:05.000Z"
+  },
+  {
+    "id": 4,
+    "headline": "4 4 4 4 4",
+    "body": "four four four four",
+    "tickers": [
+      "ticker4",
+      "ticker41"
+    ],
+    "source": "source4",
+    "ciks": [
+      4
+    ],
+    "publicationTime": "1970-01-01T00:00:04.000Z"
+  },
+  {
+    "id": 3,
+    "headline": "3 3 3 3 3 3",
+    "body": "three three three three three",
+    "tickers": [
+      "ticker3",
+      "ticker31"
+    ],
+    "source": "source3",
+    "ciks": [
+      3
+    ],
+    "publicationTime": "1970-01-01T00:00:03.000Z"
+  },
+  {
+    "id": 2,
+    "headline": "2 2 2 2 2",
+    "body": "two two two two two",
+    "tickers": [
+      "ticker2",
+      "ticker21"
+    ],
+    "source": "source2",
+    "ciks": [
+      2
+    ],
+    "publicationTime": "1970-01-01T00:00:02.000Z"
+  },
+  {
+    "id": 1,
+    "headline": "1 1 1 1 1",
+    "body": "one one one one one",
+    "tickers": [
+      "ticker1",
+      "ticker12"
+    ],
+    "source": "source1",
+    "ciks": [
+      1
+    ],
+    "publicationTime": "1970-01-01T00:00:01.000Z"
+  }
+]

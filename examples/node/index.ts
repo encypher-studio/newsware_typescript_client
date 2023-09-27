@@ -1,4 +1,4 @@
-import {Api, News} from "newsware"
+import {Api, News, Endpoint} from "newsware"
 import {ErrorEvent, CloseEvent} from "ws";
 
 // Change this with your actual apikey
