@@ -7,12 +7,12 @@ export interface Filter {
     ciks?: number[]
 }
 
-export interface Response {
-    error: ResponseError;
+export interface ApiResponse {
+    error: ApiResponseError;
     data: News[];
 }
 
-export interface ResponseError {
+export interface ApiResponseError {
     code: number;
     message: string;
 }
@@ -50,9 +50,23 @@ export enum QueryType {
     Text = "text"
 }
 
-export enum ApiHost {
-    Localhost = "ws://localhost:8080",
-    Production = "wss://newswareapi.encypherstudio.com"
+export interface EndpointDescription {
+    host: string
+    websocketProtocol: string
+    restProtocol: string
+}
+
+export const Endpoint: {[key: string]: EndpointDescription} = {
+    Localhost: {
+        host: "localhost:8080",
+        websocketProtocol: "ws",
+        restProtocol: "http"
+    },
+    Production: {
+        host: "newswareapi.encypherstudio.com",
+        websocketProtocol: "wss",
+        restProtocol: "https"
+    },
 }
 
 export enum Source {
@@ -71,4 +85,15 @@ export interface SubscribeOptions {
     openCallback?: () => void,
     closeCallback?: (closeEvent: CloseEvent) => void,
     automaticReconnect?: boolean
+}
+
+export interface HistoricalFilter extends Filter {
+    pagination?: Pagination
+    publishedAfter?: number
+    publishedBefore?: number
+}
+
+export interface Pagination {
+    limit?: number
+    page?: number
 }

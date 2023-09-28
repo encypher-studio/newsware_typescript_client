@@ -1,0 +1,6 @@
+addresses: [ https://localhost:9200 ]
+username: elastic
+password: changeme
+logRequests: false
+index: news_tests
+apikey: 568f5d4d-d6ad-4250-b187-2d6179f05786
