@@ -4,8 +4,8 @@ import WebSocket, {MessageEvent, ErrorEvent, CloseEvent} from "isomorphic-ws"
 export class Api {
     private socket?: WebSocket
     private subscribed = false
-    private websocketEndpoint: string
-    private restEndpoint: string
+    websocketEndpoint: string
+    restEndpoint: string
 
     constructor(
         private apikey: string,
