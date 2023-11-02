@@ -1,6 +1,6 @@
 {
   "name": "newsware",
-  "version": "4.1.1",
+  "version": "5.0.0-beta.0",
   "description": "Typescript client for interacting with the Newsware API",
   "main": "lib/src/index.js",
   "files": [

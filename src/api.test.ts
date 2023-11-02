@@ -1,5 +1,5 @@
 import {Api} from "./api";
-import {Endpoint} from "./types";
+import {Endpoint} from "./enums";
 import {expect} from "chai"
 import {TestsContext} from "../test/setup";
 
