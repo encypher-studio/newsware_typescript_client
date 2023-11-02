@@ -9,7 +9,7 @@ export class Api {
 
     constructor(
         private apikey: string,
-        endpoint: EndpointDescription = Endpoint.Production
+        endpoint: EndpointDescription = Endpoint.PRODUCTION
     ) {
         this.websocketEndpoint = endpoint.websocketProtocol + "://" + endpoint.host
         this.restEndpoint = endpoint.restProtocol + "://" + endpoint.host

@@ -1,7 +1,5 @@
-import {Api, Endpoint, text} from "newsware"
+import {Api, WebsocketErrorResponse, WebsocketResponse, WebsocketMethod, WebsocketResponseType} from "newsware"
 import {CloseEvent} from "ws";
-import {WebsocketErrorResponse, WebsocketResponse} from "../../src/types";
-import {WebsocketMessageType} from "../../src";
 
 // Change this with your actual apikey
 const apiKey = "568f5d4d-d6ad-4250-b187-2d6179f05786"
@@ -21,7 +19,7 @@ function main() {
         },
         // Log received news to console
         callback: (message: WebsocketResponse) => {
-            if (message.type === WebsocketMessageType.SUBSCRIBE) {
+            if (message.method === WebsocketMethod.SUBSCRIBE && message.type === WebsocketResponseType.DATA) {
                 message.payload.map(news => console.log(news))
             }
         },

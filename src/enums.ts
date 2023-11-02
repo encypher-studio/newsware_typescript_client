@@ -15,12 +15,19 @@ export enum Source {
     SEC = "SEC"
 }
 
-export enum WebsocketMessageType {
+export enum WebsocketMethod {
     SUBSCRIBE = "subscribe",
+    UNSUBSCRIBE = "unsubscribe",
     ERROR = "error",
-    
+
     // Internal message type, API does not return this error
     SOCKET_ERROR = "_socket error"
+}
+
+export enum WebsocketResponseType {
+    OK = "ok",
+    ERROR = "error",
+    DATA = "data"
 }
 
 export const Endpoint: { [key: string]: EndpointDescription } = {

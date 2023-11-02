@@ -1,5 +1,5 @@
 import {CloseEvent} from "isomorphic-ws";
-import {Source, WebsocketMessageType} from "./enums";
+import {Source, WebsocketMethod, WebsocketResponseType} from "./enums";
 
 export interface Filter {
     query?: Query
@@ -63,7 +63,7 @@ export interface ConnectOptions {
 }
 
 export interface SubscribeOptions {
-    subscriptionId?: string,
+    subscriptionId: string,
     filter: Filter,
 }
 
@@ -78,23 +78,39 @@ export interface Pagination {
     page?: number
 }
 
-export type WebsocketMessage = {
-    type: WebsocketMessageType.SUBSCRIBE
-    id?: string
+export type WebsocketRequest = {
+    method: WebsocketMethod.SUBSCRIBE
+    id: string
     payload: Filter
-}
-
-export type WebsocketErrorResponse = {
-    type: WebsocketMessageType.ERROR | WebsocketMessageType.SOCKET_ERROR
-    id?: string
+} | {
+    method: WebsocketMethod.UNSUBSCRIBE
+    id: string
     payload: {
-        type: WebsocketMessageType,
-        message: string
+        all: boolean
+    } | {
+        subscriptionId: string
     }
 }
 
-export type WebsocketResponse = {
-    type: WebsocketMessageType.SUBSCRIBE
+export type ErrorPayload = {
+    message: string
+}
+
+export type WebsocketErrorResponse = {
+    method: WebsocketMethod
     id?: string
+    payload: ErrorPayload
+    type: WebsocketResponseType.ERROR
+}
+
+export type WebsocketResponse = {
+    method: WebsocketMethod.SUBSCRIBE
+    id: string
     payload: News[]
-} | WebsocketErrorResponse
+    type: WebsocketResponseType.DATA
+} | WebsocketErrorResponse | {
+    method: WebsocketMethod
+    id?: string
+    payload: undefined
+    type: WebsocketResponseType.OK
+}

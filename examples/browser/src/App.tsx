@@ -1,6 +1,6 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import "./App.css";
-import {Api, News, WebsocketResponse, WebsocketMessageType, WsClient, Endpoint} from "newsware";
+import {Api, Endpoint, News, WebsocketResponse, WsClient, WebsocketResponseType, WebsocketMethod} from "newsware";
 import {toast, ToastContainer} from "react-toastify";
 
 function App() {
@@ -39,7 +39,7 @@ function App() {
         const wsClient = api.getWsClient({
             // Handle received news
             callback: (message: WebsocketResponse) => {
-                if (message.type === WebsocketMessageType.SUBSCRIBE)
+                if (message.method === WebsocketMethod.SUBSCRIBE && message.type === WebsocketResponseType.DATA)
                     setNews(prevState => [...message.payload, ...prevState])
             },
             // (Optional, default is true) If true, attempts to reconnect if connection is unexpectedly closed.

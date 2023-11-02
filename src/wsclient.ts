@@ -1,9 +1,9 @@
-import {ConnectOptions, SubscribeOptions, WebsocketMessage, WebsocketResponse,} from "./types";
+import {ConnectOptions, SubscribeOptions, WebsocketRequest, WebsocketResponse,} from "./types";
 import WebSocket, {CloseEvent, ErrorEvent, MessageEvent} from "isomorphic-ws"
-import {WebsocketMessageType} from "./enums";
+import {WebsocketMethod, WebsocketResponseType} from "./enums";
 
 export class WsClient {
-    private reconnectMessages: WebsocketMessage[] = []
+    private reconnectMessages: WebsocketRequest[] = []
 
     constructor(
         private socket: WebSocket,
@@ -11,7 +11,7 @@ export class WsClient {
     ) {
         this.socket.onmessage = (event: MessageEvent) => {
             const response = JSON.parse(event.data.toString()) as WebsocketResponse
-            if (response.type === WebsocketMessageType.ERROR && options.errorCallback) {
+            if (response.type === WebsocketResponseType.ERROR && options.errorCallback) {
                 options.errorCallback(response)
             } else
                 options.callback(response)
@@ -33,9 +33,9 @@ export class WsClient {
 
             if (options.errorCallback)
                 options.errorCallback({
-                    type: WebsocketMessageType.SOCKET_ERROR,
+                    method: WebsocketMethod.SOCKET_ERROR,
+                    type: WebsocketResponseType.ERROR,
                     payload: {
-                        type: WebsocketMessageType.SOCKET_ERROR,
                         message
                     }
                 })
@@ -59,8 +59,8 @@ export class WsClient {
     }
 
     subscribe(options: SubscribeOptions) {
-        const message: WebsocketMessage = {
-            type: WebsocketMessageType.SUBSCRIBE,
+        const message: WebsocketRequest = {
+            method: WebsocketMethod.SUBSCRIBE,
             id: options.subscriptionId,
             payload: options.filter
         }
@@ -68,12 +68,18 @@ export class WsClient {
         this.sendSocketMessage(message)
     }
 
-    // @ts-ignore
     unsubscribe(subscriptionId: string) {
-        // TODO: Implement when ws unsubscribe endpoint is created
+        const message: WebsocketRequest = {
+            method: WebsocketMethod.UNSUBSCRIBE,
+            id: subscriptionId,
+            payload: {
+                subscriptionId,
+            }
+        }
+        this.sendSocketMessage(message)
     }
 
-    sendSocketMessage(message: WebsocketMessage) {
+    sendSocketMessage(message: WebsocketRequest) {
         this.socket.send(JSON.stringify(message))
     }
 }
