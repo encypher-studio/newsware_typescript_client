@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import "./App.css";
-import {Api, News} from "newsware";
+import {Api, News, WebsocketResponse, WebsocketMessageType, WsClient, Endpoint} from "newsware";
 import {toast, ToastContainer} from "react-toastify";
 
 function App() {
@@ -8,40 +8,8 @@ function App() {
 
     const [news, setNews] = useState<News[]>([])
     const [inputApikey, setInputApikey] = useState<string>("")
+    const [wsClient, setWsClient] = useState<WsClient>()
     const [isSubscribed, setIsSubscribed] = useState<boolean>(false)
-    const [api, setApi] = useState<Api>()
-
-    // Subscribe after api creation
-    useEffect(() => {
-        if (api && !isSubscribed)
-            api!!.subscribe(
-                {
-                    filter: {
-                        // Add filters here
-                    },
-                    // Handle received news
-                    callback: (receivedNews: News[]) => setNews(prevState => [...receivedNews, ...prevState]),
-                    // (Optional, default is true) If true, attempts to reconnect if connection is unexpectedly closed.
-                    automaticReconnect: true,
-                    // (Optional) Show error toasts
-                    errorCallback: () => {
-                        setIsSubscribed(false)
-                        toast.error("Error, check your apikey")
-                    },
-                    // (Optional) Show a toast when connection is opened
-                    openCallback: () => {
-                        setIsSubscribed(true)
-                        toast.success("Connected")
-                    },
-                    // (Optional) Show a toast when connection is closed
-                    closeCallback: () => {
-                        setIsSubscribed(false)
-                        setApi(undefined)
-                        toast.error("Connection closed")
-                    }
-                },
-            )
-    }, [api])
 
     const fieldStyle = {
         padding: "10px",
@@ -67,11 +35,43 @@ function App() {
     }
 
     const subscribe = () => {
-        setApi(new Api(inputApikey))
+        const api = new Api(inputApikey)
+        const wsClient = api.getWsClient({
+            // Handle received news
+            callback: (message: WebsocketResponse) => {
+                if (message.type === WebsocketMessageType.SUBSCRIBE)
+                    setNews(prevState => [...message.payload, ...prevState])
+            },
+            // (Optional, default is true) If true, attempts to reconnect if connection is unexpectedly closed.
+            automaticReconnect: true,
+            // (Optional) Show error toasts
+            errorCallback: () => {
+                setIsSubscribed(false)
+                toast.error("Error, check your apikey")
+            },
+            // (Optional) Show a toast when connection is opened
+            openCallback: () => {
+                toast.success("Connected")
+                wsClient.subscribe({
+                    subscriptionId: "trackableId",
+                    filter: {
+                        // Add filters here
+                    }
+                })
+                setIsSubscribed(true)
+                setWsClient(wsClient)
+            },
+            // (Optional) Show a toast when connection is closed
+            closeCallback: () => {
+                setIsSubscribed(false)
+                toast.error("Connection closed")
+            }
+        })
     }
 
     const unsubscribe = () => {
-        api!!.unsubscribe()
+        wsClient!!.unsubscribe("trackableId")
+        setIsSubscribed(false)
     }
 
     return (
@@ -118,7 +118,7 @@ function App() {
                 theme="colored"
             />
         </div>
-    );
+    )
 }
 
 export default App;

@@ -1,34 +1,42 @@
-import {Api, News, Endpoint} from "newsware"
-import {ErrorEvent, CloseEvent} from "ws";
+import {Api, Endpoint, text} from "newsware"
+import {CloseEvent} from "ws";
+import {WebsocketErrorResponse, WebsocketResponse} from "../../src/types";
+import {WebsocketMessageType} from "../../src";
 
 // Change this with your actual apikey
 const apiKey = "568f5d4d-d6ad-4250-b187-2d6179f05786"
 
 function main() {
     const api = new Api(apiKey)
-    api.subscribe(
-        {
-            filter: {
-                // Add filters here
-            },
-            // Log received news to console
-            callback: (news: News[]) => news.map(console.log),
-            // (Optional, default is true) If true, attempts to reconnect if connection is unexpectedly closed.
-            automaticReconnect: true,
-            // (Optional) Log errors to console
-            errorCallback: (error: ErrorEvent) => {
-                console.log("Websocket error: " + error.message)
-            },
-            // (Optional) Log when connection is successfully opened
-            openCallback: () => {
-                console.log("Connection established, waiting for news...")
-            },
-            // (Optional) Log when connection closes
-            closeCallback: (_: CloseEvent) => {
-                console.log("Connection closed")
+    const wsClient = api.getWsClient({
+        // (Optional) Subscribe once the connection is open
+        openCallback: () => {
+            wsClient.subscribe({
+                subscriptionId: "trackableId",
+                filter: {
+                    // Add filters here
+                },
+            })
+            console.log("Connection established, waiting for news...")
+        },
+        // Log received news to console
+        callback: (message: WebsocketResponse) => {
+            if (message.type === WebsocketMessageType.SUBSCRIBE) {
+                message.payload.map(news => console.log(news))
             }
+        },
+        // (Optional, default is true) If true, attempts to reconnect if connection is unexpectedly closed.
+        automaticReconnect: true,
+        // (Optional) Throw errors and log to console
+        errorCallback: (message: WebsocketErrorResponse) => {
+            console.log("Websocket error: " + message.payload.message)
+            throw Error(message.payload.message)
+        },
+        // (Optional) Log when connection closes
+        closeCallback: (_: CloseEvent) => {
+            console.log("Connection closed")
         }
-    )
+    })
 }
 
 main()

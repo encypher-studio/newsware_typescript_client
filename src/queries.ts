@@ -25,5 +25,6 @@ export const text = (text: string, options?: TextOptions): Query => {
 const textOptionsDefault: TextOptions = {
     ignore: false,
     searchBody: true,
-    searchHeadline: true
+    searchHeadline: true,
+    exactMatch: false
 }
