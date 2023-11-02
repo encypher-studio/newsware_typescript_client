@@ -1,4 +1,5 @@
-import {CloseEvent, ErrorEvent} from "isomorphic-ws";
+import {CloseEvent} from "isomorphic-ws";
+import {Source, WebsocketMessageType} from "./enums";
 
 export interface Filter {
     query?: Query
@@ -7,9 +8,9 @@ export interface Filter {
     ciks?: number[]
 }
 
-export interface ApiResponse {
-    error: ApiResponseError;
-    data: News[];
+export interface RestResponse {
+    error: ApiResponseError
+    data: News[]
 }
 
 export interface ApiResponseError {
@@ -28,7 +29,7 @@ export interface News {
     creationTime: string;
 }
 
-export interface TextQuery extends TextOptions{
+export interface TextQuery extends TextOptions {
     text: string
 }
 
@@ -36,18 +37,15 @@ export interface TextOptions {
     searchBody?: boolean // defaults to true
     searchHeadline?: boolean // defaults to true
     ignore?: boolean // defaults to false
+    exactMatch?: boolean // defaults to false
 }
 
-export interface Query {
-    and?: Query[]
-    or?: Query[]
-    text?: TextQuery
-}
-
-export enum QueryType {
-    And = "and",
-    Or = "or",
-    Text = "text"
+export type Query = {
+    and: Query[]
+} | {
+    or: Query[]
+} | {
+    text: TextQuery
 }
 
 export interface EndpointDescription {
@@ -56,35 +54,17 @@ export interface EndpointDescription {
     restProtocol: string
 }
 
-export const Endpoint: {[key: string]: EndpointDescription} = {
-    Localhost: {
-        host: "localhost:8080",
-        websocketProtocol: "ws",
-        restProtocol: "http"
-    },
-    Production: {
-        host: "newswareapi.encypherstudio.com",
-        websocketProtocol: "wss",
-        restProtocol: "https"
-    },
-}
-
-export enum Source {
-    DowJones = "DJ",
-    AccessWire = "AR",
-    GlobeNewswire = "PZ",
-    PRNewswire = "PN",
-    BusinessWire = "BW",
-    SEC = "SEC"
+export interface ConnectOptions {
+    automaticReconnect?: boolean
+    callback: (response: WebsocketResponse) => void,
+    errorCallback?: (error: WebsocketErrorResponse) => void,
+    openCallback?: () => void,
+    closeCallback?: (closeEvent: CloseEvent) => void,
 }
 
 export interface SubscribeOptions {
+    subscriptionId?: string,
     filter: Filter,
-    callback: (news: News[]) => void,
-    errorCallback?: (errorEvent: ErrorEvent) => void,
-    openCallback?: () => void,
-    closeCallback?: (closeEvent: CloseEvent) => void,
-    automaticReconnect?: boolean
 }
 
 export interface HistoricalFilter extends Filter {
@@ -97,3 +77,24 @@ export interface Pagination {
     limit?: number
     page?: number
 }
+
+export type WebsocketMessage = {
+    type: WebsocketMessageType.SUBSCRIBE
+    id?: string
+    payload: Filter
+}
+
+export type WebsocketErrorResponse = {
+    type: WebsocketMessageType.ERROR | WebsocketMessageType.SOCKET_ERROR
+    id?: string
+    payload: {
+        type: WebsocketMessageType,
+        message: string
+    }
+}
+
+export type WebsocketResponse = {
+    type: WebsocketMessageType.SUBSCRIBE
+    id?: string
+    payload: News[]
+} | WebsocketErrorResponse
