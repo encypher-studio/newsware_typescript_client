@@ -2,6 +2,7 @@ import {ConnectOptions, EndpointDescription, HistoricalFilter, News, RestRespons
 import {Endpoint} from "./enums"
 import WebSocket from "isomorphic-ws"
 import {WsClient} from "./wsclient"
+import fetch from "isomorphic-fetch"
 
 export class Api {
     websocketEndpoint: string
@@ -24,7 +25,7 @@ export class Api {
     }
 
     async search(filter: HistoricalFilter): Promise<News[]> {
-        return await this.post<HistoricalFilter, News[]>('/v1/api/news', filter)
+        return await this.post<HistoricalFilter, News[]>('/v2/api/news', filter)
     }
 
     async post<T, Z>(path: string, body: T): Promise<Z> {

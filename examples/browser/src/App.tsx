@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import "./App.css";
-import {Api, Endpoint, News, WebsocketResponse, WsClient, WebsocketResponseType, WebsocketMethod} from "newsware";
+import {Api, News, WebsocketResponse, WsClient, WebsocketResponseType, WebsocketMethod} from "newsware";
 import {toast, ToastContainer} from "react-toastify";
 
 function App() {

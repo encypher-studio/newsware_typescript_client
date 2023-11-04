@@ -1,24 +1,25 @@
-import {Query, TextOptions} from "./types";
+import {Query, QueryType, TextOptions} from "./types";
 
 export const and = (...queries: Query[]): Query => {
     return {
-        and: queries
+        type: QueryType.AND,
+        queries: queries
     }
 }
 
 export const or = (...queries: Query[]): Query => {
     return {
-        or: queries
+        type: QueryType.OR,
+        queries: queries
     }
 }
 
-export const text = (text: string, options?: TextOptions): Query => {
+export const text = (term: string, options?: TextOptions): Query => {
     return {
-        text: {
-            text: text,
-            ...textOptionsDefault,
-            ...options
-        }
+        type: QueryType.TEXT,
+        term,
+        ...textOptionsDefault,
+        ...options
     }
 }
 
