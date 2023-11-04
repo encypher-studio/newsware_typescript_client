@@ -30,7 +30,8 @@ export interface News {
 }
 
 export interface TextQuery extends TextOptions {
-    text: string
+    type: QueryType.TEXT
+    term: string
 }
 
 export interface TextOptions {
@@ -40,13 +41,16 @@ export interface TextOptions {
     exactMatch?: boolean // defaults to false
 }
 
-export type Query = {
-    and: Query[]
-} | {
-    or: Query[]
-} | {
-    text: TextQuery
+export enum QueryType {
+    AND = "and",
+    OR = "or",
+    TEXT = "text"
 }
+
+export type Query = {
+    type: QueryType.AND | QueryType.OR
+    queries: Query[]
+} | TextQuery
 
 export interface EndpointDescription {
     host: string
