@@ -1,14 +1,38 @@
-import {ConnectOptions, SubscribeOptions, WebsocketRequest, WebsocketResponse,} from "./types";
+import {ConnectOptions, EndpointDescription, SubscribeOptions, WebsocketRequest, WebsocketResponse,} from "./types";
 import WebSocket, {CloseEvent, ErrorEvent, MessageEvent} from "isomorphic-ws"
 import {WebsocketMethod, WebsocketResponseType} from "./enums";
 
-export class WsClient {
-    private reconnectMessages: WebsocketRequest[] = []
+export class WsApi {
+    private readonly websocketEndpoint: string
+    socket!: WebSocket
+    reconnectMessages: WebsocketRequest[] = []
+    connectOptions?: ConnectOptions
 
     constructor(
-        private socket: WebSocket,
-        options: ConnectOptions
+        private apikey: string,
+        options: ConnectOptions,
+        endpoint: EndpointDescription
     ) {
+        this.websocketEndpoint = endpoint.websocketProtocol + "://" + endpoint.host
+        this.connect(options)
+    }
+
+    changeApikey(apikey: string) {
+        this.apikey = apikey
+        this.closeConnection()
+        if (this.connectOptions)
+            this.connect(this.connectOptions)
+    }
+
+    connect(options: ConnectOptions) {
+        options.automaticReconnect = options.automaticReconnect === undefined ? true : options.automaticReconnect
+        this.connectOptions = options
+
+        const urlParams = new URLSearchParams({
+            apikey: this.apikey,
+        })
+
+        this.socket = new WebSocket(`${this.websocketEndpoint}/ws/v2?${urlParams.toString()}`)
         this.socket.onmessage = (event: MessageEvent) => {
             const response = JSON.parse(event.data.toString()) as WebsocketResponse
             if (response.type === WebsocketResponseType.ERROR && options.errorCallback) {
@@ -44,6 +68,8 @@ export class WsClient {
         this.socket.onopen = () => {
             if (options.openCallback)
                 options.openCallback()
+            if (options.automaticReconnect)
+                this.reconnectMessages.map(message => this.sendSocketMessage(message))
         }
 
         this.socket.onclose = (event: CloseEvent) => {
@@ -51,21 +77,18 @@ export class WsClient {
                 options.closeCallback(event)
             if (options.automaticReconnect)
                 setTimeout(() => {
-                    for (const reconnectMessage of this.reconnectMessages) {
-                        this.sendSocketMessage(reconnectMessage)
-                    }
-                }, 1000)
+                    this.connect(options)
+                }, 200)
         }
     }
 
-    subscribe(options: SubscribeOptions) {
+    subscribe(options: SubscribeOptions, resubscribeOnReconnect: boolean = true) {
         const message: WebsocketRequest = {
             method: WebsocketMethod.SUBSCRIBE,
             id: options.subscriptionId,
             payload: options.filter
         }
-        this.reconnectMessages.push(message)
-        this.sendSocketMessage(message)
+        this.sendSocketMessage(message, resubscribeOnReconnect)
     }
 
     unsubscribe(subscriptionId: string) {
@@ -77,9 +100,16 @@ export class WsClient {
             }
         }
         this.sendSocketMessage(message)
+        this.reconnectMessages = this.reconnectMessages.filter((message) => message.id !== subscriptionId)
     }
 
-    sendSocketMessage(message: WebsocketRequest) {
+    sendSocketMessage(message: WebsocketRequest, resendOnReconnect: boolean = false) {
         this.socket.send(JSON.stringify(message))
+        if (resendOnReconnect)
+            this.reconnectMessages.push(message)
+    }
+
+    closeConnection() {
+        this.socket.close()
     }
 }

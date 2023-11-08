@@ -1,31 +1,23 @@
-import {ConnectOptions, EndpointDescription, HistoricalFilter, News, RestResponse} from "./types"
+import {EndpointDescription, HistoricalFilter, News, RestResponse} from "./types"
 import {Endpoint} from "./enums"
-import WebSocket from "isomorphic-ws"
-import {WsClient} from "./wsclient"
 import fetch from "isomorphic-fetch"
 
 export class Api {
-    websocketEndpoint: string
     restEndpoint: string
 
     constructor(
         private apikey: string,
         endpoint: EndpointDescription = Endpoint.PRODUCTION
     ) {
-        this.websocketEndpoint = endpoint.websocketProtocol + "://" + endpoint.host
         this.restEndpoint = endpoint.restProtocol + "://" + endpoint.host
     }
-
-    getWsClient(options: ConnectOptions): WsClient {
-        const urlParams = new URLSearchParams({
-            apikey: this.apikey,
-        })
-        
-        return new WsClient(new WebSocket(`${this.websocketEndpoint}/v2/ws?${urlParams.toString()}`), options)
+    
+    changeApikey(apikey: string) {
+        this.apikey = apikey
     }
 
     async search(filter: HistoricalFilter): Promise<News[]> {
-        return await this.post<HistoricalFilter, News[]>('/v2/api/news', filter)
+        return await this.post<HistoricalFilter, News[]>('/api/v2/news', filter)
     }
 
     async post<T, Z>(path: string, body: T): Promise<Z> {

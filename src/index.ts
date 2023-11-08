@@ -1,7 +1,7 @@
 export {or, and, text} from "./queries";
 export {Api} from "./api"
-export {WsClient} from "./wsclient"
+export {WsApi} from "./wsApi"
 export {
-    News, Filter, TextOptions, WebsocketResponse, WebsocketErrorResponse
+    News, Filter, TextOptions, WebsocketResponse, WebsocketErrorResponse, ConnectOptions
 } from "./types"
 export {Source, WebsocketMethod, WebsocketResponseType} from "./enums"
