@@ -34,6 +34,11 @@ export interface TextQuery extends TextOptions {
     term: string
 }
 
+export interface ConditionQuery {
+    type: QueryType.AND | QueryType.OR
+    queries: Query[]
+}
+
 export interface TextOptions {
     searchBody?: boolean // defaults to true
     searchHeadline?: boolean // defaults to true
@@ -47,10 +52,7 @@ export enum QueryType {
     TEXT = "text"
 }
 
-export type Query = {
-    type: QueryType.AND | QueryType.OR
-    queries: Query[]
-} | TextQuery
+export type Query = ConditionQuery | TextQuery
 
 export interface EndpointDescription {
     host: string

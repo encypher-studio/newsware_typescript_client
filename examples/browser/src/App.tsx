@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import "./App.css";
-import {Api, News, WebsocketResponse, WsClient, WebsocketResponseType, WebsocketMethod} from "newsware";
+import {WsApi, News, WebsocketResponse, WebsocketResponseType, WebsocketMethod} from "newsware";
 import {toast, ToastContainer} from "react-toastify";
 
 function App() {
@@ -8,7 +8,7 @@ function App() {
 
     const [news, setNews] = useState<News[]>([])
     const [inputApikey, setInputApikey] = useState<string>("")
-    const [wsClient, setWsClient] = useState<WsClient>()
+    const [wsApi, setWsApi] = useState<WsApi>()
     const [isSubscribed, setIsSubscribed] = useState<boolean>(false)
 
     const fieldStyle = {
@@ -35,8 +35,7 @@ function App() {
     }
 
     const subscribe = () => {
-        const api = new Api(inputApikey)
-        const wsClient = api.getWsClient({
+        const wsApi = new WsApi(inputApikey, {
             // Handle received news
             callback: (message: WebsocketResponse) => {
                 if (message.method === WebsocketMethod.SUBSCRIBE && message.type === WebsocketResponseType.DATA)
@@ -52,14 +51,14 @@ function App() {
             // (Optional) Show a toast when connection is opened
             openCallback: () => {
                 toast.success("Connected")
-                wsClient.subscribe({
+                wsApi.subscribe({
                     subscriptionId: "trackableId",
                     filter: {
                         // Add filters here
                     }
                 })
                 setIsSubscribed(true)
-                setWsClient(wsClient)
+                setWsApi(wsApi)
             },
             // (Optional) Show a toast when connection is closed
             closeCallback: () => {
@@ -70,7 +69,7 @@ function App() {
     }
 
     const unsubscribe = () => {
-        wsClient!!.unsubscribe("trackableId")
+        wsApi!!.unsubscribe("trackableId")
         setIsSubscribed(false)
     }
 
