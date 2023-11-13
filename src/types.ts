@@ -40,9 +40,9 @@ export interface ConditionQuery {
 }
 
 export interface TextOptions {
-    searchBody?: boolean // defaults to true
-    searchHeadline?: boolean // defaults to true
-    ignore?: boolean // defaults to false
+    onlyBody?: boolean
+    onlyHeadline?: boolean
+    ignore?: boolean
 }
 
 export enum QueryType {
