@@ -18,13 +18,6 @@ export const text = (term: string, options?: TextOptions): Query => {
     return {
         type: QueryType.TEXT,
         term,
-        ...textOptionsDefault,
         ...options
     }
-}
-
-const textOptionsDefault: TextOptions = {
-    ignore: false,
-    searchBody: true,
-    searchHeadline: true,
 }

@@ -111,7 +111,7 @@ describe("Api historical search", () => {
             query: {
                 type: QueryType.TEXT,
                 term: "one",
-                searchBody: true
+                onlyBody: true
             }
         })
         expect(actualNews.length).to.eq(1)
@@ -120,7 +120,7 @@ describe("Api historical search", () => {
             query: {
                 type: QueryType.TEXT,
                 term: "1",
-                searchBody: true
+                onlyBody: true
             }
         })
         expect(actualNews.length).to.eq(0)
@@ -129,7 +129,7 @@ describe("Api historical search", () => {
             query: {
                 type: QueryType.TEXT,
                 term: "1 two",
-                searchBody: true
+                onlyBody: true
             }
         })
         expect(actualNews.length).to.eq(1)
@@ -142,7 +142,7 @@ describe("Api historical search", () => {
             query: {
                 type: QueryType.TEXT,
                 term: "one",
-                searchHeadline: true
+                onlyHeadline: true
             }
         })
         expect(actualNews.length).to.eq(0)
@@ -151,7 +151,7 @@ describe("Api historical search", () => {
             query: {
                 type: QueryType.TEXT,
                 term: "one 2",
-                searchHeadline: true
+                onlyHeadline: true
             }
         })
         expect(actualNews.length).to.eq(1)
@@ -160,7 +160,7 @@ describe("Api historical search", () => {
             query: {
                 type: QueryType.TEXT,
                 term: "1",
-                searchHeadline: true
+                onlyHeadline: true
             }
         })
         expect(actualNews.length).to.eq(1)
