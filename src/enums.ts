@@ -12,7 +12,8 @@ export enum Source {
     GlobeNewswire = "PZ",
     PRNewswire = "PN",
     BusinessWire = "BW",
-    SEC = "SEC"
+    SEC = "SEC",
+    Hammerstone = "HS"
 }
 
 export enum WebsocketMethod {
