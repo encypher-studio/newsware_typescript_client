@@ -27,5 +27,4 @@ const textOptionsDefault: TextOptions = {
     ignore: false,
     searchBody: true,
     searchHeadline: true,
-    exactMatch: false
 }
