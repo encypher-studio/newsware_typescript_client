@@ -1,6 +1,6 @@
 import {ConnectOptions, EndpointDescription, SubscribeOptions, WebsocketRequest, WebsocketResponse,} from "./types";
 import WebSocket, {CloseEvent, ErrorEvent, MessageEvent} from "isomorphic-ws"
-import {WebsocketMethod, WebsocketResponseType} from "./enums";
+import {Endpoint, WebsocketMethod, WebsocketResponseType} from "./enums";
 
 export class WsApi {
     private readonly websocketEndpoint: string
@@ -11,7 +11,7 @@ export class WsApi {
     constructor(
         private apikey: string,
         options: ConnectOptions,
-        endpoint: EndpointDescription
+        endpoint: EndpointDescription = Endpoint.PRODUCTION
     ) {
         this.websocketEndpoint = endpoint.websocketProtocol + "://" + endpoint.host
         this.connect(options)
