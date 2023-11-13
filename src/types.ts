@@ -43,7 +43,6 @@ export interface TextOptions {
     searchBody?: boolean // defaults to true
     searchHeadline?: boolean // defaults to true
     ignore?: boolean // defaults to false
-    exactMatch?: boolean // defaults to false
 }
 
 export enum QueryType {
