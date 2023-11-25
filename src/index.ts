@@ -1,7 +1,13 @@
-export {or, and, text} from "./queries";
+export {or, and, text, ciks, tickers, source, categoryCodes} from "./filters";
 export {Api} from "./api"
 export {WsApi} from "./wsApi"
 export {
-    News, Filter, TextOptions, WebsocketResponse, WebsocketErrorResponse, ConnectOptions
+    News,
+    Filter,
+    TextOptions,
+    WebsocketResponse,
+    WebsocketErrorResponse,
+    ConnectOptions,
+    HistoricalFilter
 } from "./types"
-export {Source, WebsocketMethod, WebsocketResponseType} from "./enums"
+export {Source, WebsocketMethod, WebsocketResponseType, FilterType, FilterArrayAction, FilterTextAction} from "./enums"

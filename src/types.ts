@@ -1,12 +1,5 @@
-import {CloseEvent} from "isomorphic-ws";
-import {Source, WebsocketMethod, WebsocketResponseType} from "./enums";
-
-export interface Filter {
-    query?: Query
-    tickers?: string[]
-    sources?: Source[]
-    ciks?: number[]
-}
+import {CloseEvent} from "isomorphic-ws"
+import {FilterArrayAction, FilterTextAction, FilterType, WebsocketMethod, WebsocketResponseType} from "./enums"
 
 export interface RestResponse {
     error: ApiResponseError
@@ -14,44 +7,53 @@ export interface RestResponse {
 }
 
 export interface ApiResponseError {
-    code: number;
-    message: string;
+    code: number
+    message: string
 }
 
 export interface News {
-    id: string;
-    source: string;
-    tickers: string[];
-    headline: string;
-    body: string;
-    publicationTime: string;
-    receivedTime: string;
-    creationTime: string;
+    id: string
+    source: string
+    tickers: string[]
+    headline: string
+    body: string
+    publicationTime: string
+    receivedTime: string
+    creationTime: string
+    categoryCodes: string
 }
 
-export interface TextQuery extends TextOptions {
-    type: QueryType.TEXT
-    term: string
+export interface FilterText extends TextOptions {
+    type: FilterType.TEXT
+    value: string
 }
 
-export interface ConditionQuery {
-    type: QueryType.AND | QueryType.OR
-    queries: Query[]
+export interface FilterCondition {
+    type: FilterType.AND | FilterType.OR
+    value: Filter[]
 }
 
 export interface TextOptions {
+    action?: FilterTextAction // Defaults to "match"
     onlyBody?: boolean
     onlyHeadline?: boolean
-    ignore?: boolean
 }
 
-export enum QueryType {
-    AND = "and",
-    OR = "or",
-    TEXT = "text"
+export type FilterArray = {
+    type: FilterType.CATEGORY_CODES | FilterType.TICKERS
+    action: FilterArrayAction
+    value: string[]
+} | {
+    type: FilterType.SOURCE
+    action: FilterArrayAction.ANY | FilterArrayAction.EXCLUDE
+    value: string[]
+} | {
+    type: FilterType.CIKS
+    action: FilterArrayAction
+    value: number[]
 }
 
-export type Query = ConditionQuery | TextQuery
+export type Filter = FilterCondition | FilterText | FilterArray
 
 export interface EndpointDescription {
     host: string
@@ -69,13 +71,14 @@ export interface ConnectOptions {
 
 export interface SubscribeOptions {
     subscriptionId: string,
-    filter: Filter,
+    filter?: Filter,
 }
 
-export interface HistoricalFilter extends Filter {
+export interface HistoricalFilter {
     pagination?: Pagination
     publishedAfter?: number
     publishedBefore?: number
+    filter?: Filter
 }
 
 export interface Pagination {
@@ -86,7 +89,7 @@ export interface Pagination {
 export type WebsocketRequest = {
     method: WebsocketMethod.SUBSCRIBE
     id: string
-    payload: Filter
+    payload?: Filter
 } | {
     method: WebsocketMethod.UNSUBSCRIBE
     id: string

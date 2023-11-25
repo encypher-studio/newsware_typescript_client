@@ -9,7 +9,7 @@ export class Api {
         private apikey: string,
         endpoint: EndpointDescription = Endpoint.PRODUCTION
     ) {
-        this.restEndpoint = endpoint.restProtocol + "://" + endpoint.host
+        this.restEndpoint = endpoint.restProtocol + "://" + endpoint.host + "/api/v3"
     }
     
     changeApikey(apikey: string) {
@@ -17,7 +17,7 @@ export class Api {
     }
 
     async search(filter: HistoricalFilter): Promise<News[]> {
-        return await this.post<HistoricalFilter, News[]>('/api/v2/news', filter)
+        return await this.post<HistoricalFilter, News[]>('/news', filter)
     }
 
     async post<T, Z>(path: string, body: T): Promise<Z> {

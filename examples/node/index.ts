@@ -10,9 +10,7 @@ function main() {
         openCallback: () => {
             wsApi.subscribe({
                 subscriptionId: "trackableId",
-                filter: {
-                    // Add filters here
-                },
+                filter: undefined // Add filters here. Example: text("text to search")
             })
             console.log("Connection established, waiting for news...")
         },
