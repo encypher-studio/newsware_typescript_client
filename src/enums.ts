@@ -1,9 +1,23 @@
 import {EndpointDescription} from "./types";
 
-export enum QueryType {
-    And = "and",
-    Or = "or",
-    Text = "text"
+export enum FilterType {
+    AND = "and",
+    OR = "or",
+    TEXT = "text",
+    TICKERS = "tickers",
+    CATEGORY_CODES = "categoryCodes",
+    CIKS = "ciks",
+    SOURCE = "source"
+}
+export enum FilterTextAction {
+    MATCH = "match",
+    EXCLUDE = "exclude"
+}
+
+export enum FilterArrayAction {
+    ALL = "all",
+    ANY = "any",
+    EXCLUDE = "exclude"
 }
 
 export enum Source {

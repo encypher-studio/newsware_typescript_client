@@ -13,7 +13,7 @@ export class WsApi {
         options: ConnectOptions,
         endpoint: EndpointDescription = Endpoint.PRODUCTION
     ) {
-        this.websocketEndpoint = endpoint.websocketProtocol + "://" + endpoint.host
+        this.websocketEndpoint = endpoint.websocketProtocol + "://" + endpoint.host + "/ws/v3"
         this.connect(options)
     }
 
@@ -32,7 +32,7 @@ export class WsApi {
             apikey: this.apikey,
         })
 
-        this.socket = new WebSocket(`${this.websocketEndpoint}/ws/v2?${urlParams.toString()}`)
+        this.socket = new WebSocket(`${this.websocketEndpoint}?${urlParams.toString()}`)
         this.socket.onmessage = (event: MessageEvent) => {
             const response = JSON.parse(event.data.toString()) as WebsocketResponse
             if (response.type === WebsocketResponseType.ERROR && options.errorCallback) {
