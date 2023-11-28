@@ -108,17 +108,17 @@ describe("Api historical search", () => {
         const api = new Api(context.config.apikey, Endpoint.LOCALHOST)
 
         let actualNews = await api.search({
-            filter: text("one", {onlyBody: true})
+            filter: text(["one"], {onlyBody: true})
         })
         expect(actualNews.length).to.eq(1)
 
         actualNews = await api.search({
-            filter: text("1", {onlyBody: true})
+            filter: text(["1"], {onlyBody: true})
         })
         expect(actualNews.length).to.eq(0)
 
         actualNews = await api.search({
-            filter: text("1 two", {onlyBody: true})
+            filter: text(["1 two"], {onlyBody: true})
         })
         expect(actualNews.length).to.eq(0)
     })
@@ -127,17 +127,17 @@ describe("Api historical search", () => {
         const api = new Api(context.config.apikey, Endpoint.LOCALHOST)
 
         let actualNews = await api.search({
-            filter: text("one", {onlyHeadline: true})
+            filter: text(["one"], {onlyHeadline: true})
         })
         expect(actualNews.length).to.eq(0)
 
         actualNews = await api.search({
-            filter: text("one 2", {onlyHeadline: true})
+            filter: text(["one 2"], {onlyHeadline: true})
         })
         expect(actualNews.length).to.eq(0)
 
         actualNews = await api.search({
-            filter: text("1", {onlyHeadline: true})
+            filter: text(["1"], {onlyHeadline: true})
         })
         expect(actualNews.length).to.eq(1)
     })
@@ -233,7 +233,7 @@ describe("Api historical search", () => {
 
         let actualNews = await api.search({
             filter: and(
-                text("1"),
+                text(["1"]),
                 ciks(FilterArrayAction.ANY, [1])
             )
         })
@@ -241,7 +241,7 @@ describe("Api historical search", () => {
 
         actualNews = await api.search({
             filter: and(
-                text("2"),
+                text(["2"]),
                 ciks(FilterArrayAction.ANY, [1])
             )
         })
@@ -253,7 +253,7 @@ describe("Api historical search", () => {
 
         let actualNews = await api.search({
             filter: or(
-                text("1"),
+                text(["1"]),
                 ciks(FilterArrayAction.ANY, [2])
             )
         })
@@ -261,7 +261,7 @@ describe("Api historical search", () => {
 
         actualNews = await api.search({
             filter: or(
-                text("2"),
+                text(["2"]),
                 ciks(FilterArrayAction.ANY, [1]),
                 tickers(FilterArrayAction.ANY, ["ticker3"])
             )

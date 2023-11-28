@@ -25,7 +25,7 @@ export interface News {
 
 export interface FilterText extends TextOptions {
     type: FilterType.TEXT
-    value: string
+    value: string[]
 }
 
 export interface FilterCondition {

@@ -15,7 +15,7 @@ export const or = (...queries: Filter[]): Filter => {
     }
 }
 
-export const text = (value: string, options?: TextOptions): Filter => {
+export const text = (value: string[], options?: TextOptions): Filter => {
     return {
         type: FilterType.TEXT,
         value,
