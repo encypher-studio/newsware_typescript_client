@@ -1,5 +1,5 @@
 import {CloseEvent} from "isomorphic-ws"
-import {FilterArrayAction, FilterTextAction, FilterType, WebsocketMethod, WebsocketResponseType} from "./enums"
+import {FilterAction, FilterType, WebsocketMethod, WebsocketResponseType} from "./enums"
 
 export interface RestResponse {
     error: ApiResponseError
@@ -34,22 +34,22 @@ export interface FilterCondition {
 }
 
 export interface TextOptions {
-    action?: FilterTextAction // Defaults to "match"
+    action?: FilterAction
     onlyBody?: boolean
     onlyHeadline?: boolean
 }
 
 export type FilterArray = {
     type: FilterType.CATEGORY_CODES | FilterType.TICKERS
-    action: FilterArrayAction
+    action: FilterAction
     value: string[]
 } | {
     type: FilterType.SOURCE
-    action: FilterArrayAction.ANY | FilterArrayAction.EXCLUDE
+    action: FilterAction.ANY | FilterAction.EXCLUDE
     value: string[]
 } | {
     type: FilterType.CIKS
-    action: FilterArrayAction
+    action: FilterAction
     value: number[]
 }
 

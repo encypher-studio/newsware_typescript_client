@@ -20,6 +20,7 @@ export type TestsContext = Mocha.Context & LocalContext
 
 export const mochaHooks = (): Mocha.RootHookObject => ({
     async beforeAll(this: Mocha.Context) {
+        this.timeout(10000)
         const config = yaml.load(fs.readFileSync("./test/config.yml", "utf8")) as TestConfig
         if (!config.index.endsWith("_tests")) {
             throw Error("Index for tests must end in _test, otherwise production data loss is possible. Current value is: " + config.index)
