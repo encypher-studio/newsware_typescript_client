@@ -9,12 +9,8 @@ export enum FilterType {
     CIKS = "ciks",
     SOURCE = "source"
 }
-export enum FilterTextAction {
-    MATCH = "match",
-    EXCLUDE = "exclude"
-}
 
-export enum FilterArrayAction {
+export enum FilterAction {
     ALL = "all",
     ANY = "any",
     EXCLUDE = "exclude"

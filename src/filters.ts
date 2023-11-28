@@ -1,5 +1,5 @@
 import {Filter, FilterArray, TextOptions} from "./types";
-import {FilterArrayAction, FilterType} from "./enums";
+import {FilterAction, FilterType} from "./enums";
 
 export const and = (...queries: Filter[]): Filter => {
     return {
@@ -24,7 +24,7 @@ export const text = (value: string[], options?: TextOptions): Filter => {
 }
 
 export const tickers = (
-    action: FilterArrayAction,
+    action: FilterAction,
     value: string[]
 ): FilterArray => {
     return {
@@ -35,7 +35,7 @@ export const tickers = (
 }
 
 export const ciks = (
-    action: FilterArrayAction,
+    action: FilterAction,
     value: number[]
 ): FilterArray => {
     return {
@@ -46,7 +46,7 @@ export const ciks = (
 }
 
 export const categoryCodes = (
-    action: FilterArrayAction,
+    action: FilterAction,
     value: string[]
 ): FilterArray => {
     return {
@@ -57,7 +57,7 @@ export const categoryCodes = (
 }
 
 export const source = (
-    action: FilterArrayAction.ANY | FilterArrayAction.EXCLUDE,
+    action: FilterAction.ANY | FilterAction.EXCLUDE,
     value: string[]
 ): FilterArray => {
     return {
