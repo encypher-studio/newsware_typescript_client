@@ -1,9 +1,12 @@
 import {CloseEvent} from "isomorphic-ws"
 import {FilterAction, FilterType, WebsocketMethod, WebsocketResponseType} from "./enums"
 
-export interface RestResponse {
+export type RestResponse = {
     error: ApiResponseError
     data: News[]
+    pagination?: {
+        cursor: (string | number)[]
+    }
 }
 
 export interface ApiResponseError {
@@ -82,8 +85,8 @@ export interface HistoricalFilter {
 }
 
 export interface Pagination {
-    limit?: number
-    page?: number
+    limit: number
+    cursor?: (string | number)[]
 }
 
 export type WebsocketRequest = {

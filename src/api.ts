@@ -1,4 +1,4 @@
-import {EndpointDescription, HistoricalFilter, News, RestResponse} from "./types"
+import {EndpointDescription, HistoricalFilter, RestResponse} from "./types"
 import {Endpoint} from "./enums"
 import fetch from "isomorphic-fetch"
 
@@ -16,8 +16,8 @@ export class Api {
         this.apikey = apikey
     }
 
-    async search(filter: HistoricalFilter): Promise<News[]> {
-        return await this.post<HistoricalFilter, News[]>('/news', filter)
+    async search(filter: HistoricalFilter): Promise<RestResponse> {
+        return await this.post<HistoricalFilter, RestResponse>('/news', filter)
     }
 
     async post<T, Z>(path: string, body: T): Promise<Z> {
@@ -31,13 +31,13 @@ export class Api {
                 },
             })
 
-            const apiResponse = await res.json() as RestResponse
+            const restResponse = await res.json() as RestResponse
 
-            if (res.status < 200 || res.status > 299 || apiResponse.error) {
-                throw Error(`Status ${res.status}${apiResponse.error ? ": " + apiResponse.error.message : ""}`)
+            if (res.status < 200 || res.status > 299 || restResponse.error) {
+                throw Error(`Status ${res.status}${restResponse.error ? ": " + restResponse.error.message : ""}`)
             }
 
-            return apiResponse.data as Z
+            return restResponse as Z
         } catch (e: any) {
             if (e.cause?.errors?.length > 0) {
                 throw Error(e.cause.errors[0])

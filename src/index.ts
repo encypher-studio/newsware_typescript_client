@@ -10,4 +10,4 @@ export {
     ConnectOptions,
     HistoricalFilter
 } from "./types"
-export {Source, WebsocketMethod, WebsocketResponseType, FilterType, FilterAction} from "./enums"
+export {Source, WebsocketMethod, WebsocketResponseType, FilterAction} from "./enums"
