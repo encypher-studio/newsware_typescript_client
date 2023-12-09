@@ -13,259 +13,277 @@ describe("Api historical search", () => {
 
     it("paginate", async () => {
         const api = new Api(context.config.apikey, Endpoint.LOCALHOST)
-        let actualNews = await api.search({
+        let res = await api.search({
             pagination: {
                 limit: 2,
-                page: 1
             }
         })
+        let actualNews = res.data
         expect(actualNews.length).to.eq(2)
 
-        actualNews = await api.search({
+        res = await api.search({
             pagination: {
                 limit: 4,
-                page: 1
             }
         })
+        actualNews = res.data
         expect(actualNews.length).to.eq(4)
 
-        actualNews = await api.search({
+        res = await api.search({
             pagination: {
-                limit: 10,
-                page: 2
+                limit: 3,
             }
         })
+        actualNews = res.data
+        expect(actualNews.length).to.eq(3)
+        
+        res = await api.search({
+            pagination: {
+                limit: 3,
+                cursor: res.pagination?.cursor
+            }
+        })
+        actualNews = res.data
+        expect(actualNews.length).to.eq(3)
+
+        res = await api.search({
+            pagination: {
+                limit: 3,
+                cursor: res.pagination?.cursor
+            }
+        })
+        actualNews = res.data
         expect(actualNews.length).to.eq(0)
     })
 
     it("published after", async () => {
         const api = new Api(context.config.apikey, Endpoint.LOCALHOST)
 
-        let actualNews = await api.search({
+        let actualNews = (await api.search({
             publishedAfter: 3000
-        })
+        })).data
         expect(actualNews.length).to.eq(3)
 
-        actualNews = await api.search({
+        actualNews = (await api.search({
             publishedAfter: 5000
-        })
+        })).data
         expect(actualNews.length).to.eq(1)
 
-        actualNews = await api.search({
+        actualNews = (await api.search({
             publishedAfter: 6000
-        })
+        })).data
         expect(actualNews.length).to.eq(0)
     })
 
     it("published before", async () => {
         const api = new Api(context.config.apikey, Endpoint.LOCALHOST)
 
-        let actualNews = await api.search({
+        let actualNews = (await api.search({
             publishedBefore: 1000
-        })
+        })).data
         expect(actualNews.length).to.eq(0)
 
-        actualNews = await api.search({
+        actualNews = (await api.search({
             publishedBefore: 5000
-        })
+        })).data
         expect(actualNews.length).to.eq(4)
 
-        actualNews = await api.search({
+        actualNews = (await api.search({
             publishedBefore: 6000
-        })
+        })).data
         expect(actualNews.length).to.eq(5)
     })
 
     it("published between", async () => {
         const api = new Api(context.config.apikey, Endpoint.LOCALHOST)
 
-        let actualNews = await api.search({
+        let actualNews = (await api.search({
             publishedAfter: 1000,
             publishedBefore: 3000
-        })
+        })).data
         expect(actualNews.length).to.eq(1)
 
-        actualNews = await api.search({
+        actualNews = (await api.search({
             publishedAfter: 4000,
             publishedBefore: 6000
-        })
+        })).data
         expect(actualNews.length).to.eq(1)
 
-        actualNews = await api.search({
+        actualNews = (await api.search({
             publishedAfter: 1000,
             publishedBefore: 6000
-        })
+        })).data
         expect(actualNews.length).to.eq(4)
 
-        actualNews = await api.search({
+        actualNews = (await api.search({
             publishedAfter: 6000,
             publishedBefore: 10000
-        })
+        })).data
         expect(actualNews.length).to.eq(0)
     })
 
     it("by body", async () => {
         const api = new Api(context.config.apikey, Endpoint.LOCALHOST)
 
-        let actualNews = await api.search({
+        let actualNews = (await api.search({
             filter: text(["one"], {onlyBody: true})
-        })
+        })).data
         expect(actualNews.length).to.eq(1)
 
-        actualNews = await api.search({
+        actualNews = (await api.search({
             filter: text(["1"], {onlyBody: true})
-        })
+        })).data
         expect(actualNews.length).to.eq(0)
 
-        actualNews = await api.search({
+        actualNews = (await api.search({
             filter: text(["1 two"], {onlyBody: true})
-        })
+        })).data
         expect(actualNews.length).to.eq(0)
     })
 
     it("by headline", async () => {
         const api = new Api(context.config.apikey, Endpoint.LOCALHOST)
 
-        let actualNews = await api.search({
+        let actualNews = (await api.search({
             filter: text(["one"], {onlyHeadline: true})
-        })
+        })).data
         expect(actualNews.length).to.eq(0)
 
-        actualNews = await api.search({
+        actualNews = (await api.search({
             filter: text(["one 2"], {onlyHeadline: true})
-        })
+        })).data
         expect(actualNews.length).to.eq(0)
 
-        actualNews = await api.search({
+        actualNews = (await api.search({
             filter: text(["1"], {onlyHeadline: true})
-        })
+        })).data
         expect(actualNews.length).to.eq(1)
     })
 
     it("by category code", async () => {
         const api = new Api(context.config.apikey, Endpoint.LOCALHOST)
 
-        let actualNews = await api.search({
+        let actualNews = (await api.search({
             filter: categoryCodes(FilterAction.ANY, ["categoryCode1", "categoryCode2"])
-        })
+        })).data
         expect(actualNews.length).to.eq(2)
 
-        actualNews = await api.search({
+        actualNews = (await api.search({
             filter: categoryCodes(FilterAction.ALL, ["categoryCode1", "categoryCode2"])
-        })
+        })).data
         expect(actualNews.length).to.eq(0)
 
-        actualNews = await api.search({
+        actualNews = (await api.search({
             filter: categoryCodes(FilterAction.ALL, ["categoryCode1", "categoryCode11"])
-        })
+        })).data
         expect(actualNews.length).to.eq(1)
 
-        actualNews = await api.search({
+        actualNews = (await api.search({
             filter: categoryCodes(FilterAction.EXCLUDE, ["categoryCode1", "categoryCode2"])
-        })
+        })).data
         expect(actualNews.length).to.eq(4)
     })
 
     it("by tickers", async () => {
         const api = new Api(context.config.apikey, Endpoint.LOCALHOST)
 
-        let actualNews = await api.search({
+        let actualNews = (await api.search({
             filter: tickers(FilterAction.ANY, ["ticker1", "ticker2"])
-        })
+        })).data
         expect(actualNews.length).to.eq(2)
 
-        actualNews = await api.search({
+        actualNews = (await api.search({
             filter: tickers(FilterAction.ALL, ["ticker1", "ticker2"])
-        })
+        })).data
         expect(actualNews.length).to.eq(0)
 
-        actualNews = await api.search({
+        actualNews = (await api.search({
             filter: tickers(FilterAction.ALL, ["ticker1", "ticker11"])
-        })
+        })).data
         expect(actualNews.length).to.eq(1)
 
-        actualNews = await api.search({
+        actualNews = (await api.search({
             filter: tickers(FilterAction.EXCLUDE, ["ticker1", "ticker2"])
-        })
+        })).data
         expect(actualNews.length).to.eq(4)
     })
 
     it("by ciks", async () => {
         const api = new Api(context.config.apikey, Endpoint.LOCALHOST)
 
-        let actualNews = await api.search({
+        let actualNews = (await api.search({
             filter: ciks(FilterAction.ANY, [1, 2])
-        })
+        })).data
         expect(actualNews.length).to.eq(2)
 
-        actualNews = await api.search({
+        actualNews = (await api.search({
             filter: ciks(FilterAction.ALL, [1, 2])
-        })
+        })).data
         expect(actualNews.length).to.eq(0)
 
-        actualNews = await api.search({
+        actualNews = (await api.search({
             filter: ciks(FilterAction.ALL, [1, 11])
-        })
+        })).data
         expect(actualNews.length).to.eq(1)
 
-        actualNews = await api.search({
+        actualNews = (await api.search({
             filter: ciks(FilterAction.EXCLUDE, [1, 2])
-        })
+        })).data
         expect(actualNews.length).to.eq(4)
     })
 
     it("by source", async () => {
         const api = new Api(context.config.apikey, Endpoint.LOCALHOST)
 
-        let actualNews = await api.search({
+        let actualNews = (await api.search({
             filter: source(FilterAction.ANY, ["source1", "source2"])
-        })
+        })).data
         expect(actualNews.length).to.eq(2)
 
-        actualNews = await api.search({
+        actualNews = (await api.search({
             filter: source(FilterAction.EXCLUDE, ["source1", "source2"])
-        })
+        })).data
         expect(actualNews.length).to.eq(4)
     })
 
     it("by and condition", async () => {
         const api = new Api(context.config.apikey, Endpoint.LOCALHOST)
 
-        let actualNews = await api.search({
+        let actualNews = (await api.search({
             filter: and(
                 text(["1"]),
                 ciks(FilterAction.ANY, [1])
             )
-        })
+        })).data
         expect(actualNews.length).to.eq(1)
 
-        actualNews = await api.search({
+        actualNews = (await api.search({
             filter: and(
                 text(["2"]),
                 ciks(FilterAction.ANY, [1])
             )
-        })
+        })).data
         expect(actualNews.length).to.eq(0)
     })
 
     it("by or condition", async () => {
         const api = new Api(context.config.apikey, Endpoint.LOCALHOST)
 
-        let actualNews = await api.search({
+        let actualNews = (await api.search({
             filter: or(
                 text(["1"]),
                 ciks(FilterAction.ANY, [2])
             )
-        })
+        })).data
         expect(actualNews.length).to.eq(2)
 
-        actualNews = await api.search({
+        actualNews = (await api.search({
             filter: or(
                 text(["2"]),
                 ciks(FilterAction.ANY, [1]),
                 tickers(FilterAction.ANY, ["ticker3"])
             )
-        })
+        })).data
         expect(actualNews.length).to.eq(3)
     })
 })
