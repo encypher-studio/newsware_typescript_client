@@ -59,7 +59,7 @@ export class WsApi {
                 options.errorCallback({
                     method: WebsocketMethod.SOCKET_ERROR,
                     type: WebsocketResponseType.ERROR,
-                    payload: {
+                    value: {
                         message
                     }
                 })
@@ -86,7 +86,7 @@ export class WsApi {
         const message: WebsocketRequest = {
             method: WebsocketMethod.SUBSCRIBE,
             id: options.subscriptionId,
-            payload: options.filter
+            value: options.filter
         }
         this.sendSocketMessage(message, resubscribeOnReconnect)
     }
@@ -95,7 +95,7 @@ export class WsApi {
         const message: WebsocketRequest = {
             method: WebsocketMethod.UNSUBSCRIBE,
             id: subscriptionId,
-            payload: {
+            value: {
                 subscriptionId,
             }
         }

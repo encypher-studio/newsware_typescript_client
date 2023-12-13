@@ -17,15 +17,15 @@ function main() {
         // Log received news to console
         callback: (message: WebsocketResponse) => {
             if (message.method === WebsocketMethod.SUBSCRIBE && message.type === WebsocketResponseType.DATA) {
-                message.payload.map(news => console.log(news))
+                message.value.map(news => console.log(news))
             }
         },
         // (Optional, default is true) If true, attempts to reconnect if connection is unexpectedly closed.
         automaticReconnect: true,
         // (Optional) Throw errors and log to console
         errorCallback: (message: WebsocketErrorResponse) => {
-            console.log("Websocket error: " + message.payload.message)
-            throw Error(message.payload.message)
+            console.log("Websocket error: " + message.value.message)
+            throw Error(message.value.message)
         },
         // (Optional) Log when connection closes
         closeCallback: (_: CloseEvent) => {
