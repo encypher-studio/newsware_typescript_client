@@ -93,36 +93,36 @@ export interface Pagination {
 export type WebsocketRequest = {
     method: WebsocketMethod.SUBSCRIBE
     id: string
-    payload?: Filter
+    value?: Filter
 } | {
     method: WebsocketMethod.UNSUBSCRIBE
     id: string
-    payload: {
+    value: {
         all: boolean
     } | {
         subscriptionId: string
     }
 }
 
-export type ErrorPayload = {
+export type ErrorValue = {
     message: string
 }
 
 export type WebsocketErrorResponse = {
     method: WebsocketMethod
     id?: string
-    payload: ErrorPayload
+    value: ErrorValue
     type: WebsocketResponseType.ERROR
 }
 
 export type WebsocketResponse = {
     method: WebsocketMethod.SUBSCRIBE
     id: string
-    payload: News[]
+    value: News[]
     type: WebsocketResponseType.DATA
 } | WebsocketErrorResponse | {
     method: WebsocketMethod
     id?: string
-    payload: undefined
+    value: undefined
     type: WebsocketResponseType.OK
 }

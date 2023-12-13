@@ -39,7 +39,7 @@ function App() {
             // Handle received news
             callback: (message: WebsocketResponse) => {
                 if (message.method === WebsocketMethod.SUBSCRIBE && message.type === WebsocketResponseType.DATA)
-                    setNews(prevState => [...message.payload, ...prevState])
+                    setNews(prevState => [...message.value, ...prevState])
             },
             // (Optional, default is true) If true, attempts to reconnect if connection is unexpectedly closed.
             automaticReconnect: true,
