@@ -24,6 +24,7 @@ export interface News {
     receivedTime: string
     creationTime: string
     categoryCodes: string
+    link?: string
 }
 
 export interface FilterText extends TextOptions {
