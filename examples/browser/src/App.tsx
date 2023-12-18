@@ -42,7 +42,7 @@ function App() {
                     setNews(prevState => [...message.value, ...prevState])
             },
             // (Optional, default is true) If true, attempts to reconnect if connection is unexpectedly closed.
-            automaticReconnect: true,
+            automaticReconnect: false,
             // (Optional) Show error toasts
             errorCallback: () => {
                 setIsSubscribed(false)

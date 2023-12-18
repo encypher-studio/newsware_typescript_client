@@ -1,4 +1,4 @@
-export {or, and, text, ciks, tickers, source, categoryCodes} from "./filters";
+export {Or, And, Text, Ciks, Tickers, Sources, CategoryCodes} from "./filters";
 export {Api} from "./api"
 export {WsApi} from "./wsApi"
 export {

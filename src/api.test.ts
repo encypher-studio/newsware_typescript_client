@@ -1,8 +1,8 @@
 import {Api} from "./api";
-import {Endpoint, FilterAction} from "./enums";
+import {Endpoint} from "./enums";
 import {expect} from "chai"
 import {TestsContext} from "../test/setup";
-import {and, categoryCodes, ciks, or, source, text, tickers} from "./filters";
+import {And, CategoryCodes, Ciks, Or, Sources, Text, Tickers} from "./filters";
 
 describe("Api historical search", () => {
     let context: TestsContext
@@ -36,7 +36,7 @@ describe("Api historical search", () => {
         })
         actualNews = res.data
         expect(actualNews.length).to.eq(3)
-        
+
         res = await api.search({
             pagination: {
                 limit: 3,
@@ -126,17 +126,17 @@ describe("Api historical search", () => {
         const api = new Api(context.config.apikey, Endpoint.LOCALHOST)
 
         let actualNews = (await api.search({
-            filter: text(["one"], {onlyBody: true})
+            filter: Text.any(["one"], {onlyBody: true})
         })).data
         expect(actualNews.length).to.eq(1)
 
         actualNews = (await api.search({
-            filter: text(["1"], {onlyBody: true})
+            filter: Text.any(["1"], {onlyBody: true})
         })).data
         expect(actualNews.length).to.eq(0)
 
         actualNews = (await api.search({
-            filter: text(["1 two"], {onlyBody: true})
+            filter: Text.any(["1 two"], {onlyBody: true})
         })).data
         expect(actualNews.length).to.eq(0)
     })
@@ -145,17 +145,17 @@ describe("Api historical search", () => {
         const api = new Api(context.config.apikey, Endpoint.LOCALHOST)
 
         let actualNews = (await api.search({
-            filter: text(["one"], {onlyHeadline: true})
+            filter: Text.any(["one"], {onlyHeadline: true})
         })).data
         expect(actualNews.length).to.eq(0)
 
         actualNews = (await api.search({
-            filter: text(["one 2"], {onlyHeadline: true})
+            filter: Text.any(["one 2"], {onlyHeadline: true})
         })).data
         expect(actualNews.length).to.eq(0)
 
         actualNews = (await api.search({
-            filter: text(["1"], {onlyHeadline: true})
+            filter: Text.any(["1"], {onlyHeadline: true})
         })).data
         expect(actualNews.length).to.eq(1)
     })
@@ -164,22 +164,22 @@ describe("Api historical search", () => {
         const api = new Api(context.config.apikey, Endpoint.LOCALHOST)
 
         let actualNews = (await api.search({
-            filter: categoryCodes(FilterAction.ANY, ["categoryCode1", "categoryCode2"])
+            filter: CategoryCodes.any(["categoryCode1", "categoryCode2"])
         })).data
         expect(actualNews.length).to.eq(2)
 
         actualNews = (await api.search({
-            filter: categoryCodes(FilterAction.ALL, ["categoryCode1", "categoryCode2"])
+            filter: CategoryCodes.all(["categoryCode1", "categoryCode2"])
         })).data
         expect(actualNews.length).to.eq(0)
 
         actualNews = (await api.search({
-            filter: categoryCodes(FilterAction.ALL, ["categoryCode1", "categoryCode11"])
+            filter: CategoryCodes.all(["categoryCode1", "categoryCode11"])
         })).data
         expect(actualNews.length).to.eq(1)
 
         actualNews = (await api.search({
-            filter: categoryCodes(FilterAction.EXCLUDE, ["categoryCode1", "categoryCode2"])
+            filter: CategoryCodes.exclude(["categoryCode1", "categoryCode2"])
         })).data
         expect(actualNews.length).to.eq(4)
     })
@@ -188,22 +188,22 @@ describe("Api historical search", () => {
         const api = new Api(context.config.apikey, Endpoint.LOCALHOST)
 
         let actualNews = (await api.search({
-            filter: tickers(FilterAction.ANY, ["ticker1", "ticker2"])
+            filter: Tickers.any(["ticker1", "ticker2"])
         })).data
         expect(actualNews.length).to.eq(2)
 
         actualNews = (await api.search({
-            filter: tickers(FilterAction.ALL, ["ticker1", "ticker2"])
+            filter: Tickers.all(["ticker1", "ticker2"])
         })).data
         expect(actualNews.length).to.eq(0)
 
         actualNews = (await api.search({
-            filter: tickers(FilterAction.ALL, ["ticker1", "ticker11"])
+            filter: Tickers.all(["ticker1", "ticker11"])
         })).data
         expect(actualNews.length).to.eq(1)
 
         actualNews = (await api.search({
-            filter: tickers(FilterAction.EXCLUDE, ["ticker1", "ticker2"])
+            filter: Tickers.exclude(["ticker1", "ticker2"])
         })).data
         expect(actualNews.length).to.eq(4)
     })
@@ -212,22 +212,22 @@ describe("Api historical search", () => {
         const api = new Api(context.config.apikey, Endpoint.LOCALHOST)
 
         let actualNews = (await api.search({
-            filter: ciks(FilterAction.ANY, [1, 2])
+            filter: Ciks.any([1, 2])
         })).data
         expect(actualNews.length).to.eq(2)
 
         actualNews = (await api.search({
-            filter: ciks(FilterAction.ALL, [1, 2])
+            filter: Ciks.all([1, 2])
         })).data
         expect(actualNews.length).to.eq(0)
 
         actualNews = (await api.search({
-            filter: ciks(FilterAction.ALL, [1, 11])
+            filter: Ciks.all([1, 11])
         })).data
         expect(actualNews.length).to.eq(1)
 
         actualNews = (await api.search({
-            filter: ciks(FilterAction.EXCLUDE, [1, 2])
+            filter: Ciks.exclude([1, 2])
         })).data
         expect(actualNews.length).to.eq(4)
     })
@@ -236,12 +236,12 @@ describe("Api historical search", () => {
         const api = new Api(context.config.apikey, Endpoint.LOCALHOST)
 
         let actualNews = (await api.search({
-            filter: source(FilterAction.ANY, ["source1", "source2"])
+            filter: Sources.any(["source1", "source2"])
         })).data
         expect(actualNews.length).to.eq(2)
 
         actualNews = (await api.search({
-            filter: source(FilterAction.EXCLUDE, ["source1", "source2"])
+            filter: Sources.exclude(["source1", "source2"])
         })).data
         expect(actualNews.length).to.eq(4)
     })
@@ -250,17 +250,17 @@ describe("Api historical search", () => {
         const api = new Api(context.config.apikey, Endpoint.LOCALHOST)
 
         let actualNews = (await api.search({
-            filter: and(
-                text(["1"]),
-                ciks(FilterAction.ANY, [1])
+            filter: And(
+                Text.any(["1"]),
+                Ciks.any([1])
             )
         })).data
         expect(actualNews.length).to.eq(1)
 
         actualNews = (await api.search({
-            filter: and(
-                text(["2"]),
-                ciks(FilterAction.ANY, [1])
+            filter: And(
+                Text.any(["2"]),
+                Ciks.any([1])
             )
         })).data
         expect(actualNews.length).to.eq(0)
@@ -270,18 +270,18 @@ describe("Api historical search", () => {
         const api = new Api(context.config.apikey, Endpoint.LOCALHOST)
 
         let actualNews = (await api.search({
-            filter: or(
-                text(["1"]),
-                ciks(FilterAction.ANY, [2])
+            filter: Or(
+                Text.any(["1"]),
+                Ciks.any([2])
             )
         })).data
         expect(actualNews.length).to.eq(2)
 
         actualNews = (await api.search({
-            filter: or(
-                text(["2"]),
-                ciks(FilterAction.ANY, [1]),
-                tickers(FilterAction.ANY, ["ticker3"])
+            filter: Or(
+                Text.any(["2"]),
+                Ciks.any([1]),
+                Tickers.any(["ticker3"])
             )
         })).data
         expect(actualNews.length).to.eq(3)
