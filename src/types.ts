@@ -29,6 +29,7 @@ export interface News {
 
 export interface FilterText extends TextOptions {
     type: FilterType.TEXT
+    action?: FilterAction
     value: string[]
 }
 
@@ -38,7 +39,6 @@ export interface FilterCondition {
 }
 
 export interface TextOptions {
-    action?: FilterAction
     onlyBody?: boolean
     onlyHeadline?: boolean
 }
@@ -126,3 +126,5 @@ export type WebsocketResponse = {
     value: undefined
     type: WebsocketResponseType.OK
 }
+
+export type FiltersMetadata = FilterType.TICKERS | FilterType.CATEGORY_CODES | FilterType.SOURCE | FilterType.CIKS
