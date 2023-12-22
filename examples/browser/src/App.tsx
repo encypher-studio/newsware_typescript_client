@@ -53,7 +53,7 @@ function App() {
                 toast.success("Connected")
                 wsApi.subscribe({
                     subscriptionId: "trackableId",
-                    filter: undefined // Add filters here. Example: text("text to search")
+                    filter: undefined // Add filters here. Example: Text.any("text to search")
                 })
                 setIsSubscribed(true)
                 setWsApi(wsApi)
