@@ -86,7 +86,10 @@ export class WsApi {
         const message: WebsocketRequest = {
             method: WebsocketMethod.SUBSCRIBE,
             id: options.subscriptionId,
-            value: options.filter
+            value: {
+                filter: options.filter,
+                fields: options.fields
+            }
         }
         this.sendSocketMessage(message, resubscribeOnReconnect)
     }

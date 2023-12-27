@@ -41,6 +41,20 @@ export enum WebsocketResponseType {
     DATA = "data"
 }
 
+export enum Field {
+    ID = "id",
+    HEADLINE = "headline",
+    BODY = "body",
+    TICKERS = "tickers",
+    SOURCE = "source",
+    PUBLICATION_TIME = "publicationTime",
+    RECEIVED_TIME = "receivedTime",
+    CREATION_TIME = "creationTime",
+    CATEGORY_CODES = "categoryCodes",
+    CIKS = "ciks",
+    LINK = "link"
+}
+
 export const Endpoint: { [key: string]: EndpointDescription } = {
     LOCALHOST: {
         host: "localhost:8080",
