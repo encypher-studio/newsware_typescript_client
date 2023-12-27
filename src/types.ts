@@ -1,5 +1,5 @@
 import {CloseEvent} from "isomorphic-ws"
-import {FilterAction, FilterType, WebsocketMethod, WebsocketResponseType} from "./enums"
+import {Field, FilterAction, FilterType, WebsocketMethod, WebsocketResponseType} from "./enums"
 
 export type RestResponse = {
     error: ApiResponseError
@@ -75,6 +75,7 @@ export interface ConnectOptions {
 
 export interface SubscribeOptions {
     subscriptionId: string,
+    fields?: Field[],
     filter?: Filter,
 }
 
@@ -93,7 +94,7 @@ export interface Pagination {
 export type WebsocketRequest = {
     method: WebsocketMethod.SUBSCRIBE
     id: string
-    value?: Filter
+    value: { filter?: Filter, fields?: Field[] }
 } | {
     method: WebsocketMethod.UNSUBSCRIBE
     id: string

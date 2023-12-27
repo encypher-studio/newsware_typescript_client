@@ -1,4 +1,4 @@
-import {WebsocketErrorResponse, WebsocketMethod, WebsocketResponse, WebsocketResponseType, WsApi} from "newsware"
+import {WebsocketErrorResponse, WebsocketMethod, WebsocketResponse, WebsocketResponseType, WsApi, Field} from "newsware"
 import {CloseEvent} from "ws";
 
 // Change this with your actual apikey
@@ -10,7 +10,8 @@ function main() {
         openCallback: () => {
             wsApi.subscribe({
                 subscriptionId: "trackableId",
-                filter: undefined // Add filters here. Example: Text.any("text to search")
+                filter: undefined, // Add filters here. Example: Text.any("text to search")
+                fields: [Field.HEADLINE, Field.BODY, Field.PUBLICATION_TIME, Field.SOURCE] // Add additional fields to retrieve here
             })
             console.log("Connection established, waiting for news...")
         },

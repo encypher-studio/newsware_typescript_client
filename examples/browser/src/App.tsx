@@ -1,8 +1,8 @@
 import React, {useState} from "react";
 import "./App.css";
-import {WsApi, News, WebsocketResponse, WebsocketResponseType, WebsocketMethod} from "newsware";
+import {WsApi, News, WebsocketResponse, WebsocketResponseType, WebsocketMethod, Field} from "newsware";
 import {toast, ToastContainer} from "react-toastify";
-
+    
 function App() {
     const columns = ["Source", "Time", "Headline", "Body"]
 
@@ -53,7 +53,8 @@ function App() {
                 toast.success("Connected")
                 wsApi.subscribe({
                     subscriptionId: "trackableId",
-                    filter: undefined // Add filters here. Example: Text.any("text to search")
+                    filter: undefined, // Add filters here. Example: Text.any("text to search")
+                    fields: [Field.HEADLINE, Field.BODY, Field.PUBLICATION_TIME, Field.SOURCE] // Add additional fields to retrieve here
                 })
                 setIsSubscribed(true)
                 setWsApi(wsApi)

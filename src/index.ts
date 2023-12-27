@@ -11,4 +11,4 @@ export {
     HistoricalFilter,
     RestResponse
 } from "./types"
-export {Source, WebsocketMethod, WebsocketResponseType, FilterAction} from "./enums"
+export {Source, WebsocketMethod, WebsocketResponseType, FilterAction, Field} from "./enums"
