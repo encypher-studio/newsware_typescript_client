@@ -84,6 +84,7 @@ export interface HistoricalFilter {
     publishedAfter?: number
     publishedBefore?: number
     filter?: Filter
+    fields?: Field[]
 }
 
 export interface Pagination {
