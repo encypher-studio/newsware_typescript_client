@@ -65,7 +65,7 @@ async function seed(config: TestConfig) {
             .toString("utf-8")
     ) as News[]
 
-    const operations: any[] = seedData.flatMap(doc => [{index: {_index: config.index}}, doc])
+    const operations: any[] = seedData.flatMap(doc => [{index: {_index: config.index, _id: doc.id}}, doc])
 
     const bulkResponse = await client.bulk({refresh: true, operations})
 

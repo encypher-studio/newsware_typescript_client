@@ -286,4 +286,20 @@ describe("Api historical search", () => {
         })).data
         expect(actualNews.length).to.eq(3)
     })
+
+    it("get by id", async () => {
+        const api = new Api(context.config.apikey, Endpoint.LOCALHOST)
+
+        let actualNews = (await api.getById(2)).data
+        expect(actualNews.id).eq(2)
+    })
+
+    it("get by id (404)", async () => {
+        const api = new Api(context.config.apikey, Endpoint.LOCALHOST)
+
+        await api.getById(2000, function (response) {
+            expect(response.error.code).eq(404)
+            expect(response.error.message).eq("Resource not found")
+        })
+    })
 })

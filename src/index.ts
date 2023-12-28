@@ -9,6 +9,8 @@ export {
     WebsocketErrorResponse,
     ConnectOptions,
     HistoricalFilter,
-    RestResponse
+    RestResponse,
+    RestResponseSuccess,
+    RestResponseError
 } from "./types"
 export {Source, WebsocketMethod, WebsocketResponseType, FilterAction, Field} from "./enums"
