@@ -1,15 +1,24 @@
 import {CloseEvent} from "isomorphic-ws"
 import {Field, FilterAction, FilterType, WebsocketMethod, WebsocketResponseType} from "./enums"
 
-export type RestResponse = {
-    error: ApiResponseError
-    data: News[]
+export type RestResponse<T> = RestResponseSuccess<T> | RestResponseError<T>
+
+export type RestResponseSuccess<T> = {
+    data: T
     pagination?: {
         cursor: (string | number)[]
     }
 }
 
-export interface ApiResponseError {
+export type RestResponseError<T> = {
+    error: RestError
+    data: T
+    pagination?: {
+        cursor: (string | number)[]
+    }
+}
+
+export interface RestError {
     code: number
     message: string
 }

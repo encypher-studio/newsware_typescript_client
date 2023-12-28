@@ -1,4 +1,11 @@
-import {EndpointDescription, HistoricalFilter, RestResponse} from "./types"
+import {
+    EndpointDescription,
+    HistoricalFilter,
+    News,
+    RestResponse,
+    RestResponseError,
+    RestResponseSuccess
+} from "./types"
 import {Endpoint} from "./enums"
 import fetch from "isomorphic-fetch"
 
@@ -11,16 +18,48 @@ export class Api {
     ) {
         this.restEndpoint = endpoint.restProtocol + "://" + endpoint.host + "/api/v3"
     }
-    
+
     changeApikey(apikey: string) {
         this.apikey = apikey
     }
 
-    async search(filter: HistoricalFilter): Promise<RestResponse> {
-        return await this.post<HistoricalFilter, RestResponse>('/news', filter)
+    async search(filter: HistoricalFilter, errorHandler: (apiResponse: RestResponseError<News[]>) => void = this.handleError): Promise<RestResponseSuccess<News[]>> {
+        return await this.post<HistoricalFilter, News[]>('/news', filter, errorHandler)
     }
 
-    async post<T, Z>(path: string, body: T): Promise<Z> {
+    async getById(id: number, errorHandler: (apiResponse: RestResponseError<News>) => void = this.handleError): Promise<RestResponseSuccess<News>> {
+        return await this.get<News>(`/news/${id}`, undefined, errorHandler)
+    }
+
+    async get<T>(
+        path: string,
+        params?: any,
+        errorHandler: (apiResponse: RestResponseError<T>) => void = this.handleError
+    ): Promise<RestResponse<T>> {
+        try {
+            const endpoint = this.restEndpoint + path + (params ? "?" + new URLSearchParams(params) : '')
+            const res = await fetch(endpoint, {
+                method: "GET",
+                headers: {
+                    'content-type': 'application/json',
+                    'x-api-key': this.apikey
+                },
+            })
+            
+            return this.handle(res, errorHandler)
+        } catch (e: any) {
+            if (e.cause?.errors?.length > 0) {
+                throw Error(e.cause.errors[0])
+            }
+            throw e
+        }
+    }
+
+    async post<T, Z>(
+        path: string,
+        body: T,
+        errorHandler: (apiResponse: RestResponseError<Z>) => void = this.handleError
+    ): Promise<RestResponseSuccess<Z>> {
         try {
             const res = await fetch(this.restEndpoint + path, {
                 method: "POST",
@@ -31,18 +70,30 @@ export class Api {
                 },
             })
 
-            const restResponse = await res.json() as RestResponse
-
-            if (res.status < 200 || res.status > 299 || restResponse.error) {
-                throw Error(`Status ${res.status}${restResponse.error ? ": " + restResponse.error.message : ""}`)
-            }
-
-            return restResponse as Z
+            return this.handle(res, errorHandler)
         } catch (e: any) {
             if (e.cause?.errors?.length > 0) {
                 throw Error(e.cause.errors[0])
             }
             throw e
         }
+    }
+
+    async handle<T>(res: Response, handleError: (apiResponse: RestResponseError<T>) => void): Promise<RestResponse<T>> {
+        const restResponse = await res.json() as RestResponseSuccess<T>
+
+        if (res.status < 200 || res.status > 299) {
+            await handleError(restResponse as RestResponseError<T>)
+        }
+
+        return restResponse
+    }
+
+    async handleError<T>(apiResponse: RestResponseError<T>) {
+        throw Error(`Status ${apiResponse.error.code}${
+            apiResponse.error
+                ? ": " + apiResponse.error.message.charAt(0).toUpperCase() + apiResponse.error.message.slice(1)
+                : ""
+        }`)
     }
 }
