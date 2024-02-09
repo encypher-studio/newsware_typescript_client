@@ -1,7 +1,7 @@
-import {Client} from "@elastic/elasticsearch";
+import { Client } from "@elastic/elasticsearch";
 import * as yaml from "js-yaml"
 import * as fs from "fs";
-import {News} from "../src";
+import { News } from "../src";
 
 type LocalContext = Readonly<{
     config: TestConfig
@@ -25,7 +25,7 @@ export const mochaHooks = (): Mocha.RootHookObject => ({
         if (!config.index.endsWith("_tests")) {
             throw Error("Index for tests must end in _test, otherwise production data loss is possible. Current value is: " + config.index)
         }
-        
+
         await seed(config)
 
         const context: LocalContext = {
@@ -51,13 +51,20 @@ async function seed(config: TestConfig) {
     if (!await client.ping()) {
         throw Error("Failed to connect to ElasticSearch")
     }
-    
+
     await client.indices.delete({
         index: config.index
     })
-    
+
     await client.indices.create({
-        index: config.index
+        index: config.index,
+        mappings: {
+            properties: {
+                "id": {
+                    type: "keyword"
+                },
+            }
+        }
     })
 
     const seedData = JSON.parse(
@@ -65,9 +72,9 @@ async function seed(config: TestConfig) {
             .toString("utf-8")
     ) as News[]
 
-    const operations: any[] = seedData.flatMap(doc => [{index: {_index: config.index, _id: doc.id}}, doc])
+    const operations: any[] = seedData.flatMap(doc => [{ index: { _index: config.index, _id: doc.id } }, doc])
 
-    const bulkResponse = await client.bulk({refresh: true, operations})
+    const bulkResponse = await client.bulk({ refresh: true, operations })
 
     if (bulkResponse.errors) {
         const erroredDocuments: object[] = []

@@ -1,6 +1,6 @@
 [
   {
-    "id": 6,
+    "id": "6",
     "headline": "6 6 6 6 6",
     "body": "six six six six six",
     "tickers": [
@@ -19,7 +19,7 @@
     "publicationTime": "1970-01-01T00:00:06.000Z"
   },
   {
-    "id": 5,
+    "id": "5",
     "headline": "5 5 5 5 5",
     "body": "five five five five five",
     "tickers": [
@@ -38,7 +38,7 @@
     "publicationTime": "1970-01-01T00:00:05.000Z"
   },
   {
-    "id": 4,
+    "id": "4",
     "headline": "4 4 4 4 4",
     "body": "four four four four",
     "tickers": [
@@ -57,7 +57,7 @@
     "publicationTime": "1970-01-01T00:00:04.000Z"
   },
   {
-    "id": 3,
+    "id": "3",
     "headline": "3 3 3 3 3 3",
     "body": "three three three three three",
     "tickers": [
@@ -76,7 +76,7 @@
     "publicationTime": "1970-01-01T00:00:03.000Z"
   },
   {
-    "id": 2,
+    "id": "2",
     "headline": "2 2 2 2 2",
     "body": "two two two two two",
     "tickers": [
@@ -95,7 +95,7 @@
     "publicationTime": "1970-01-01T00:00:02.000Z"
   },
   {
-    "id": 1,
+    "id": "1",
     "headline": "1 1 1 1 1",
     "body": "one one one one one",
     "tickers": [
