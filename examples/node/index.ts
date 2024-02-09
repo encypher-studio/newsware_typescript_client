@@ -1,5 +1,5 @@
-import {WebsocketErrorResponse, WebsocketMethod, WebsocketResponse, WebsocketResponseType, WsApi, Field} from "newsware"
-import {CloseEvent} from "ws";
+import { WebsocketErrorResponse, WebsocketMethod, WebsocketResponse, WebsocketResponseType, WsApi, Field } from "newsware"
+import { CloseEvent } from "ws";
 
 // Change this with your actual apikey
 const apiKey = "568f5d4d-d6ad-4250-b187-2d6179f05786"
@@ -18,7 +18,7 @@ function main() {
         // Log received news to console
         callback: (message: WebsocketResponse) => {
             if (message.method === WebsocketMethod.SUBSCRIBE && message.type === WebsocketResponseType.DATA) {
-                message.value.map(news => console.log(news))
+                console.log(message.value)
             }
         },
         // (Optional, default is true) If true, attempts to reconnect if connection is unexpectedly closed.

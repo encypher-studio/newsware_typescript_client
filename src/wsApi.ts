@@ -1,6 +1,6 @@
-import {ConnectOptions, EndpointDescription, SubscribeOptions, WebsocketRequest, WebsocketResponse,} from "./types";
-import WebSocket, {CloseEvent, ErrorEvent, MessageEvent} from "isomorphic-ws"
-import {Endpoint, WebsocketMethod, WebsocketResponseType} from "./enums";
+import { ConnectOptions, EndpointDescription, SubscribeOptions, WebsocketRequest, WebsocketResponse, } from "./types";
+import WebSocket, { CloseEvent, ErrorEvent, MessageEvent } from "isomorphic-ws"
+import { Endpoint, WebsocketMethod, WebsocketResponseType } from "./enums";
 
 export class WsApi {
     private readonly websocketEndpoint: string
