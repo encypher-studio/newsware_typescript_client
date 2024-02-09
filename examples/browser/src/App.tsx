@@ -1,8 +1,8 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import "./App.css";
-import {WsApi, News, WebsocketResponse, WebsocketResponseType, WebsocketMethod, Field} from "newsware";
-import {toast, ToastContainer} from "react-toastify";
-    
+import { WsApi, News, WebsocketResponse, WebsocketResponseType, WebsocketMethod, Field } from "newsware";
+import { toast, ToastContainer } from "react-toastify";
+
 function App() {
     const columns = ["Source", "Time", "Headline", "Body"]
 
@@ -18,19 +18,19 @@ function App() {
     }
 
     const renderNews = () => {
-        return news.map(({id, source, publicationTime, headline, body}) => {
-            return <tr key={id} style={{maxWidth: "100%"}}>
-                <td style={{...fieldStyle, width: "10%"}}>{source}</td>
-                <td style={{...fieldStyle, width: "20%"}}>{publicationTime}</td>
-                <td style={{...fieldStyle, width: "30%"}}>{headline}</td>
-                <td style={{...fieldStyle, width: "40%"}}>{body}</td>
+        return news.map(({ id, source, publicationTime, headline, body }) => {
+            return <tr key={id} style={{ maxWidth: "100%" }}>
+                <td style={{ ...fieldStyle, width: "10%" }}>{source}</td>
+                <td style={{ ...fieldStyle, width: "20%" }}>{publicationTime}</td>
+                <td style={{ ...fieldStyle, width: "30%" }}>{headline}</td>
+                <td style={{ ...fieldStyle, width: "40%" }}>{body}</td>
             </tr>
         })
     }
 
     const renderHeader = () => {
         return <tr>
-            {columns.map(column => <th style={{fontSize: "15px"}}>{column}</th>)}
+            {columns.map(column => <th style={{ fontSize: "15px" }}>{column}</th>)}
         </tr>
     }
 
@@ -39,7 +39,7 @@ function App() {
             // Handle received news
             callback: (message: WebsocketResponse) => {
                 if (message.method === WebsocketMethod.SUBSCRIBE && message.type === WebsocketResponseType.DATA)
-                    setNews(prevState => [...message.value, ...prevState])
+                    setNews(prevState => [message.value, ...prevState])
             },
             // (Optional, default is true) If true, attempts to reconnect if connection is unexpectedly closed.
             automaticReconnect: false,
@@ -75,10 +75,10 @@ function App() {
     return (
         <div className="App">
             <header className="App-header">
-                <label htmlFor="apikey" style={{paddingBottom: "10px"}}>Api key</label>
+                <label htmlFor="apikey" style={{ paddingBottom: "10px" }}>Api key</label>
                 <input id="apikey" placeholder="Api key" value={inputApikey}
-                       onChange={e => setInputApikey(e.target.value)}/>
-                <div style={{paddingBottom: "10px"}}>
+                    onChange={e => setInputApikey(e.target.value)} />
+                <div style={{ paddingBottom: "10px" }}>
                     {
                         isSubscribed ?
                             <button onClick={unsubscribe}> Unsubscribe </button>
@@ -90,10 +90,10 @@ function App() {
                     news.length > 0 ?
                         <table>
                             <thead>
-                            {renderHeader()}
+                                {renderHeader()}
                             </thead>
                             <tbody>
-                            {renderNews()}
+                                {renderNews()}
                             </tbody>
                         </table>
                         : isSubscribed ?

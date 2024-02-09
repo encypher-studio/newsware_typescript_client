@@ -1,5 +1,5 @@
-import {CloseEvent} from "isomorphic-ws"
-import {Field, FilterAction, FilterType, WebsocketMethod, WebsocketResponseType} from "./enums"
+import { CloseEvent } from "isomorphic-ws"
+import { Field, FilterAction, FilterType, WebsocketMethod, WebsocketResponseType } from "./enums"
 
 export type RestResponse<T> = RestResponseSuccess<T> | RestResponseError<T>
 
@@ -129,7 +129,7 @@ export type WebsocketErrorResponse = {
 export type WebsocketResponse = {
     method: WebsocketMethod.SUBSCRIBE
     id: string
-    value: News[]
+    value: News
     type: WebsocketResponseType.DATA
 } | WebsocketErrorResponse | {
     method: WebsocketMethod
