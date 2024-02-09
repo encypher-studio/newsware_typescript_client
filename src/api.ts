@@ -6,7 +6,7 @@ import {
     RestResponseError,
     RestResponseSuccess
 } from "./types"
-import {Endpoint} from "./enums"
+import { Endpoint } from "./enums"
 import fetch from "isomorphic-fetch"
 
 export class Api {
@@ -27,7 +27,7 @@ export class Api {
         return await this.post<HistoricalFilter, News[]>('/news', filter, errorHandler)
     }
 
-    async getById(id: number, errorHandler: (apiResponse: RestResponseError<News>) => void = this.handleError): Promise<RestResponseSuccess<News>> {
+    async getById(id: string, errorHandler: (apiResponse: RestResponseError<News>) => void = this.handleError): Promise<RestResponseSuccess<News>> {
         return await this.get<News>(`/news/${id}`, undefined, errorHandler)
     }
 
@@ -45,7 +45,7 @@ export class Api {
                     'x-api-key': this.apikey
                 },
             })
-            
+
             return this.handle(res, errorHandler)
         } catch (e: any) {
             if (e.cause?.errors?.length > 0) {
@@ -90,10 +90,9 @@ export class Api {
     }
 
     async handleError<T>(apiResponse: RestResponseError<T>) {
-        throw Error(`Status ${apiResponse.error.code}${
-            apiResponse.error
+        throw Error(`Status ${apiResponse.error.code}${apiResponse.error
                 ? ": " + apiResponse.error.message.charAt(0).toUpperCase() + apiResponse.error.message.slice(1)
                 : ""
-        }`)
+            }`)
     }
 }

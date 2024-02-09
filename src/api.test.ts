@@ -1,8 +1,8 @@
-import {Api} from "./api";
-import {Endpoint} from "./enums";
-import {expect} from "chai"
-import {TestsContext} from "../test/setup";
-import {And, CategoryCodes, Ciks, Or, Sources, Text, Tickers} from "./filters";
+import { Api } from "./api";
+import { Endpoint } from "./enums";
+import { expect } from "chai"
+import { TestsContext } from "../test/setup";
+import { And, CategoryCodes, Ciks, Or, Sources, Text, Tickers } from "./filters";
 
 describe("Api historical search", () => {
     let context: TestsContext
@@ -126,17 +126,17 @@ describe("Api historical search", () => {
         const api = new Api(context.config.apikey, Endpoint.LOCALHOST)
 
         let actualNews = (await api.search({
-            filter: Text.any(["one"], {onlyBody: true})
+            filter: Text.any(["one"], { onlyBody: true })
         })).data
         expect(actualNews.length).to.eq(1)
 
         actualNews = (await api.search({
-            filter: Text.any(["1"], {onlyBody: true})
+            filter: Text.any(["1"], { onlyBody: true })
         })).data
         expect(actualNews.length).to.eq(0)
 
         actualNews = (await api.search({
-            filter: Text.any(["1 two"], {onlyBody: true})
+            filter: Text.any(["1 two"], { onlyBody: true })
         })).data
         expect(actualNews.length).to.eq(0)
     })
@@ -145,17 +145,17 @@ describe("Api historical search", () => {
         const api = new Api(context.config.apikey, Endpoint.LOCALHOST)
 
         let actualNews = (await api.search({
-            filter: Text.any(["one"], {onlyHeadline: true})
+            filter: Text.any(["one"], { onlyHeadline: true })
         })).data
         expect(actualNews.length).to.eq(0)
 
         actualNews = (await api.search({
-            filter: Text.any(["one 2"], {onlyHeadline: true})
+            filter: Text.any(["one 2"], { onlyHeadline: true })
         })).data
         expect(actualNews.length).to.eq(0)
 
         actualNews = (await api.search({
-            filter: Text.any(["1"], {onlyHeadline: true})
+            filter: Text.any(["1"], { onlyHeadline: true })
         })).data
         expect(actualNews.length).to.eq(1)
     })
@@ -290,14 +290,14 @@ describe("Api historical search", () => {
     it("get by id", async () => {
         const api = new Api(context.config.apikey, Endpoint.LOCALHOST)
 
-        let actualNews = (await api.getById(2)).data
-        expect(actualNews.id).eq(2)
+        let actualNews = (await api.getById("2")).data
+        expect(actualNews.id).eq("2")
     })
 
     it("get by id (404)", async () => {
         const api = new Api(context.config.apikey, Endpoint.LOCALHOST)
 
-        await api.getById(2000, function (response) {
+        await api.getById("2000", function (response) {
             expect(response.error.code).eq(404)
             expect(response.error.message).eq("Resource not found")
         })
