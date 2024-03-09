@@ -35,6 +35,8 @@ function main() {
             console.log("Connection closed")
         }
     })
+
+    wsApi.connect()
 }
 
 main()

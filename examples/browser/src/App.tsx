@@ -67,6 +67,8 @@ function App() {
                 toast.error("Connection closed")
             }
         })
+
+        wsApi.connect()
     }
 
     const unsubscribe = () => {

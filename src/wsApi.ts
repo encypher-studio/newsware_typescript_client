@@ -24,7 +24,6 @@ export class WsApi {
     ) {
         this.options = { ...defaultOptions, ...options }
         this.websocketEndpoint = this.options.endpoint.websocketProtocol + "://" + this.options.endpoint.host + "/ws/v3"
-        this.connect()
     }
 
     changeApikey(apikey: string) {
