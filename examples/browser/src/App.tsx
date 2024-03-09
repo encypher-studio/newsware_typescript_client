@@ -41,6 +41,8 @@ function App() {
                 if (message.method === WebsocketMethod.SUBSCRIBE && message.type === WebsocketResponseType.DATA)
                     setNews(prevState => [message.value, ...prevState])
             },
+            // (Optional, default is 1000) Delay in milliseconds before attempting to reconnect.
+            reconnectDelay: 1000,
             // (Optional, default is true) If true, attempts to reconnect if connection is unexpectedly closed.
             automaticReconnect: false,
             // (Optional) Show error toasts
