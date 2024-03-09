@@ -13,13 +13,13 @@ jobs:
           node-version: '20.x'
           registry-url: 'https://registry.npmjs.org'
       - run: |
-          VERSION=$(echo ${{ github.ref_name }} | sed -e 's/v//')
-          TAG=latest
+          export VERSION=$(echo ${{ github.ref_name }} | sed -e 's/v//')
+          export TAG="latest"
           if [[ $VERSION == *"beta"* ]]; then
-            TAG = "beta"
+            export TAG="beta"
           fi
           if [[ $VERSION == *"alpha"* ]]; then
-            TAG = "alpha"
+            export TAG="alpha"
           fi
           npm version ${VERSION} --tag $TAG --no-commmit-hooks --no-git-tag-version
       - run: npm ci
