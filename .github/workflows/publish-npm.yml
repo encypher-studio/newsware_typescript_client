@@ -14,7 +14,14 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
       - run: |
           VERSION=$(echo ${{ github.ref_name }} | sed -e 's/v//')
-          npm version ${VERSION} --no-commmit-hooks --no-git-tag-version
+          TAG=latest
+          if [[ $VERSION == *"beta"* ]]; then
+            TAG = "beta"
+          fi
+          if [[ $VERSION == *"alpha"* ]]; then
+            TAG = "alpha"
+          fi
+          npm version ${VERSION} --tag $TAG --no-commmit-hooks --no-git-tag-version
       - run: npm ci
       - run: npm publish
         env:
