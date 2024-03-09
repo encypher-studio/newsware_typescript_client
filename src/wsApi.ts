@@ -17,6 +17,7 @@ export class WsApi {
     socket?: WebSocket
     reconnectMessages: WebsocketRequest[] = []
     private options: Required<ConnectOptions>
+    private closed: boolean = true
 
     constructor(
         private apikey: string,
@@ -35,6 +36,8 @@ export class WsApi {
     }
 
     connect() {
+        this.closed = false
+
         const urlParams = new URLSearchParams({
             apikey: this.apikey,
         })
@@ -79,7 +82,7 @@ export class WsApi {
 
         this.socket.onclose = (event: CloseEvent) => {
             this.options.closeCallback(event)
-            if (this.options.reconnect)
+            if (this.options.reconnect && !this.closed)
                 setTimeout(() => {
                     this.connect()
                 }, this.options.reconnectDelay)
@@ -118,5 +121,6 @@ export class WsApi {
 
     closeConnection() {
         this.socket?.close()
+        this.closed = true
     }
 }
