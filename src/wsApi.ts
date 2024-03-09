@@ -28,7 +28,9 @@ export class WsApi {
 
     changeApikey(apikey: string) {
         this.apikey = apikey
-        this.closeConnection()
+        if (this.socket.readyState === WebSocket.OPEN) {
+            this.closeConnection()
+        }
         this.connect()
     }
 
