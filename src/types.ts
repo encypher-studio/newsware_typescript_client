@@ -75,7 +75,9 @@ export interface EndpointDescription {
 }
 
 export interface ConnectOptions {
-    automaticReconnect?: boolean
+    automaticReconnect?: boolean // Defaults to true
+    endpoint?: EndpointDescription // Defaults to production
+    reconnectDelay?: number, // In milliseconds, default 1000
     callback: (response: WebsocketResponse) => void,
     errorCallback?: (error: WebsocketErrorResponse) => void,
     openCallback?: () => void,
@@ -139,3 +141,8 @@ export type WebsocketResponse = {
 }
 
 export type FiltersMetadata = FilterType.TICKERS | FilterType.CATEGORY_CODES | FilterType.SOURCE | FilterType.CIKS
+
+export type ApiConfig = {
+    endpoint: EndpointDescription
+    reconnectDelay?: number // In milliseconds
+}

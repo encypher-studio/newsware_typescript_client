@@ -23,6 +23,8 @@ function main() {
         },
         // (Optional, default is true) If true, attempts to reconnect if connection is unexpectedly closed.
         automaticReconnect: true,
+        // (Optional, default is 1000) Delay in milliseconds before attempting to reconnect.
+        reconnectDelay: 1000,
         // (Optional) Throw errors and log to console
         errorCallback: (message: WebsocketErrorResponse) => {
             console.log("Websocket error: " + message.value.message)

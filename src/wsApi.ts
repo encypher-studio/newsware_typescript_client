@@ -1,33 +1,39 @@
-import { ConnectOptions, EndpointDescription, SubscribeOptions, WebsocketRequest, WebsocketResponse, } from "./types";
+import { ConnectOptions, SubscribeOptions, WebsocketRequest, WebsocketResponse, } from "./types";
 import WebSocket, { CloseEvent, ErrorEvent, MessageEvent } from "isomorphic-ws"
 import { Endpoint, WebsocketMethod, WebsocketResponseType } from "./enums";
+
+const defaultOptions: Required<ConnectOptions> = {
+    automaticReconnect: true,
+    endpoint: Endpoint.PRODUCTION,
+    reconnectDelay: 1000,
+    errorCallback: () => { },
+    openCallback: () => { },
+    closeCallback: () => { },
+    callback: () => { }
+}
 
 export class WsApi {
     private readonly websocketEndpoint: string
     socket!: WebSocket
     reconnectMessages: WebsocketRequest[] = []
-    connectOptions?: ConnectOptions
+    private options: Required<ConnectOptions>
 
     constructor(
         private apikey: string,
-        options: ConnectOptions,
-        endpoint: EndpointDescription = Endpoint.PRODUCTION
+        options: ConnectOptions
     ) {
-        this.websocketEndpoint = endpoint.websocketProtocol + "://" + endpoint.host + "/ws/v3"
-        this.connect(options)
+        this.options = { ...defaultOptions, ...options }
+        this.websocketEndpoint = this.options.endpoint.websocketProtocol + "://" + this.options.endpoint.host + "/ws/v3"
+        this.connect()
     }
 
     changeApikey(apikey: string) {
         this.apikey = apikey
         this.closeConnection()
-        if (this.connectOptions)
-            this.connect(this.connectOptions)
+        this.connect()
     }
 
-    connect(options: ConnectOptions) {
-        options.automaticReconnect = options.automaticReconnect === undefined ? true : options.automaticReconnect
-        this.connectOptions = options
-
+    connect() {
         const urlParams = new URLSearchParams({
             apikey: this.apikey,
         })
@@ -35,10 +41,10 @@ export class WsApi {
         this.socket = new WebSocket(`${this.websocketEndpoint}?${urlParams.toString()}`)
         this.socket.onmessage = (event: MessageEvent) => {
             const response = JSON.parse(event.data.toString()) as WebsocketResponse
-            if (response.type === WebsocketResponseType.ERROR && options.errorCallback) {
-                options.errorCallback(response)
+            if (response.type === WebsocketResponseType.ERROR && this.options.errorCallback) {
+                this.options.errorCallback(response)
             } else
-                options.callback(response)
+                this.options.callback(response)
         }
 
         this.socket.onerror = (event: ErrorEvent) => {
@@ -55,29 +61,26 @@ export class WsApi {
                 message = "Not authorized, make sure your api key is correct and active"
             }
 
-            if (options.errorCallback)
-                options.errorCallback({
-                    method: WebsocketMethod.SOCKET_ERROR,
-                    type: WebsocketResponseType.ERROR,
-                    value: {
-                        message
-                    }
-                })
+            this.options.errorCallback({
+                method: WebsocketMethod.SOCKET_ERROR,
+                type: WebsocketResponseType.ERROR,
+                value: {
+                    message
+                }
+            })
         }
 
         this.socket.onopen = () => {
-            if (options.openCallback)
-                options.openCallback()
-            if (options.automaticReconnect)
+            this.options.openCallback()
+            if (this.options.automaticReconnect)
                 this.reconnectMessages.map(message => this.sendSocketMessage(message))
         }
 
         this.socket.onclose = (event: CloseEvent) => {
-            if (options.closeCallback)
-                options.closeCallback(event)
-            if (options.automaticReconnect)
+            this.options.closeCallback(event)
+            if (this.options.automaticReconnect)
                 setTimeout(() => {
-                    this.connect(options)
+                    this.connect()
                 }, 200)
         }
     }
