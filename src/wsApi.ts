@@ -14,7 +14,7 @@ const defaultOptions: Required<ConnectOptions> = {
 
 export class WsApi {
     private readonly websocketEndpoint: string
-    socket!: WebSocket
+    socket?: WebSocket
     reconnectMessages: WebsocketRequest[] = []
     private options: Required<ConnectOptions>
 
@@ -28,7 +28,7 @@ export class WsApi {
 
     changeApikey(apikey: string) {
         this.apikey = apikey
-        if (this.socket.readyState === WebSocket.OPEN) {
+        if (this.socket?.readyState === WebSocket.OPEN) {
             this.closeConnection()
         }
         this.connect()
@@ -111,12 +111,12 @@ export class WsApi {
     }
 
     sendSocketMessage(message: WebsocketRequest, resendOnReconnect: boolean = false) {
-        this.socket.send(JSON.stringify(message))
+        this.socket?.send(JSON.stringify(message))
         if (resendOnReconnect)
             this.reconnectMessages.push(message)
     }
 
     closeConnection() {
-        this.socket.close()
+        this.socket?.close()
     }
 }
