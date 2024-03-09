@@ -21,8 +21,8 @@ jobs:
           if [[ $VERSION == *"alpha"* ]]; then
             export TAG="alpha"
           fi
-          npm version ${VERSION} --tag $TAG --no-commmit-hooks --no-git-tag-version
-      - run: npm ci
-      - run: npm publish
+          npm version ${VERSION} --no-commmit-hooks --no-git-tag-version
+          npm ci
+          npm publish --tag $TAG
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
