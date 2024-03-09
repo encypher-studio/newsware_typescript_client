@@ -44,7 +44,7 @@ function App() {
             // (Optional, default is 1000) Delay in milliseconds before attempting to reconnect.
             reconnectDelay: 1000,
             // (Optional, default is true) If true, attempts to reconnect if connection is unexpectedly closed.
-            automaticReconnect: false,
+            reconnect: false,
             // (Optional) Show error toasts
             errorCallback: () => {
                 setIsSubscribed(false)

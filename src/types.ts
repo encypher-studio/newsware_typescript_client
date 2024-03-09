@@ -75,7 +75,7 @@ export interface EndpointDescription {
 }
 
 export interface ConnectOptions {
-    automaticReconnect?: boolean // Defaults to true
+    reconnect?: boolean // Defaults to true
     endpoint?: EndpointDescription // Defaults to production
     reconnectDelay?: number, // In milliseconds, default 1000
     callback: (response: WebsocketResponse) => void,

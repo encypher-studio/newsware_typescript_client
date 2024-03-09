@@ -3,7 +3,7 @@ import WebSocket, { CloseEvent, ErrorEvent, MessageEvent } from "isomorphic-ws"
 import { Endpoint, WebsocketMethod, WebsocketResponseType } from "./enums";
 
 const defaultOptions: Required<ConnectOptions> = {
-    automaticReconnect: true,
+    reconnect: true,
     endpoint: Endpoint.PRODUCTION,
     reconnectDelay: 1000,
     errorCallback: () => { },
@@ -72,16 +72,16 @@ export class WsApi {
 
         this.socket.onopen = () => {
             this.options.openCallback()
-            if (this.options.automaticReconnect)
+            if (this.options.reconnect)
                 this.reconnectMessages.map(message => this.sendSocketMessage(message))
         }
 
         this.socket.onclose = (event: CloseEvent) => {
             this.options.closeCallback(event)
-            if (this.options.automaticReconnect)
+            if (this.options.reconnect)
                 setTimeout(() => {
                     this.connect()
-                }, 200)
+                }, this.options.reconnectDelay)
         }
     }
 
