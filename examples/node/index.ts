@@ -5,7 +5,8 @@ import { CloseEvent } from "ws";
 const apiKey = "568f5d4d-d6ad-4250-b187-2d6179f05786"
 
 function main() {
-    const wsApi = new WsApi(apiKey, {
+    const wsApi = new WsApi({
+        apiKey: apiKey,
         // (Optional) Subscribe once the connection is open
         openCallback: () => {
             wsApi.subscribe({
