@@ -27,8 +27,8 @@ export class Api {
         return await this.post<HistoricalFilter, News[]>('/news', filter, errorHandler)
     }
 
-    async getById(id: string, errorHandler: (apiResponse: RestResponseError<News>) => void = this.handleError): Promise<RestResponseSuccess<News>> {
-        return await this.get<News>(`/news/${id}`, undefined, errorHandler)
+    async getById(id: string, errorHandler: (apiResponse: RestResponseError<News>) => void = this.handleError): Promise<News> {
+        return (await this.get<News>(`/news/${id}`, undefined, errorHandler)).data
     }
 
     async get<T>(
@@ -91,8 +91,8 @@ export class Api {
 
     async handleError<T>(apiResponse: RestResponseError<T>) {
         throw Error(`Status ${apiResponse.error.code}${apiResponse.error
-                ? ": " + apiResponse.error.message.charAt(0).toUpperCase() + apiResponse.error.message.slice(1)
-                : ""
+            ? ": " + apiResponse.error.message.charAt(0).toUpperCase() + apiResponse.error.message.slice(1)
+            : ""
             }`)
     }
 }

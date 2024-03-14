@@ -290,7 +290,7 @@ describe("Api historical search", () => {
     it("get by id", async () => {
         const api = new Api(context.config.apikey, Endpoint.LOCALHOST)
 
-        let actualNews = (await api.getById("2")).data
+        let actualNews = await api.getById("2")
         expect(actualNews.id).eq("2")
     })
 
