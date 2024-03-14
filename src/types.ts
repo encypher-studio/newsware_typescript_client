@@ -75,6 +75,7 @@ export interface EndpointDescription {
 }
 
 export interface ConnectOptions {
+    apiKey: string,
     reconnect?: boolean // Defaults to true
     endpoint?: EndpointDescription // Defaults to production
     reconnectDelay?: number, // In milliseconds, default 1000

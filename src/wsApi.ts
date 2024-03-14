@@ -3,6 +3,7 @@ import WebSocket, { CloseEvent, ErrorEvent, MessageEvent } from "isomorphic-ws"
 import { Endpoint, WebsocketMethod, WebsocketResponseType } from "./enums";
 
 const defaultOptions: Required<ConnectOptions> = {
+    apiKey: "",
     reconnect: true,
     endpoint: Endpoint.PRODUCTION,
     reconnectDelay: 1000,
@@ -18,17 +19,18 @@ export class WsApi {
     reconnectMessages: WebsocketRequest[] = []
     private options: Required<ConnectOptions>
     private closed: boolean = true
+    private apiKey: string
 
     constructor(
-        private apikey: string,
         options: ConnectOptions
     ) {
         this.options = { ...defaultOptions, ...options }
+        this.apiKey = options.apiKey
         this.websocketEndpoint = this.options.endpoint.websocketProtocol + "://" + this.options.endpoint.host + "/ws/v3"
     }
 
-    changeApikey(apikey: string) {
-        this.apikey = apikey
+    changeApikey(apiKey: string) {
+        this.apiKey = apiKey
         if (this.socket?.readyState === WebSocket.OPEN) {
             this.closeConnection()
         }
@@ -39,7 +41,7 @@ export class WsApi {
         this.closed = false
 
         const urlParams = new URLSearchParams({
-            apikey: this.apikey,
+            apikey: this.apiKey,
         })
 
         this.socket = new WebSocket(`${this.websocketEndpoint}?${urlParams.toString()}`)

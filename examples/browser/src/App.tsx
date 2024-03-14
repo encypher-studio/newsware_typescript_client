@@ -35,7 +35,8 @@ function App() {
     }
 
     const subscribe = () => {
-        const wsApi = new WsApi(inputApikey, {
+        const wsApi = new WsApi({
+            apiKey: inputApikey,
             // Handle received news
             callback: (message: WebsocketResponse) => {
                 if (message.method === WebsocketMethod.SUBSCRIBE && message.type === WebsocketResponseType.DATA)
