@@ -1,4 +1,4 @@
-import {EndpointDescription} from "./types";
+import { EndpointDescription } from "./types";
 
 export enum FilterType {
     AND = "and",
@@ -23,7 +23,9 @@ export enum Source {
     PRNewswire = "PN",
     BusinessWire = "BW",
     SEC = "SEC",
-    Hammerstone = "HS"
+    Hammerstone = "HS",
+    FlyOnTheWall = "fly_on_the_wall",
+    StreetInsider = "street_insider",
 }
 
 export enum WebsocketMethod {
