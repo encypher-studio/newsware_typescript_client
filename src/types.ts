@@ -147,3 +147,13 @@ export type ApiConfig = {
     endpoint: EndpointDescription
     reconnectDelay?: number // In milliseconds
 }
+
+export interface CategoryCode {
+    code: string
+    source: string
+    description: string
+}
+
+export interface Source {
+    code: string
+}

@@ -1,10 +1,12 @@
 import {
+    CategoryCode,
     EndpointDescription,
     HistoricalFilter,
     News,
     RestResponse,
     RestResponseError,
-    RestResponseSuccess
+    RestResponseSuccess,
+    Source
 } from "./types"
 import { Endpoint } from "./enums"
 import fetch from "isomorphic-fetch"
@@ -29,6 +31,16 @@ export class Api {
 
     async getById(id: string, errorHandler: (apiResponse: RestResponseError<News>) => void = this.handleError): Promise<News> {
         return (await this.get<News>(`/news/${id}`, undefined, errorHandler)).data
+    }
+
+    async getCategoryCodes(source: string): Promise<CategoryCode[]> {
+        return (await this.get<CategoryCode[]>('/category-codes', {
+            source
+        })).data;
+    }
+
+    async getSources(): Promise<Source[]> {
+        return (await (this.get<Source[]>('/sources'))).data;
     }
 
     async get<T>(
