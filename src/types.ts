@@ -152,6 +152,7 @@ export interface CategoryCode {
     code: string
     source: string
     description: string
+    children: CategoryCode[]
 }
 
 export interface SourceDetails {
