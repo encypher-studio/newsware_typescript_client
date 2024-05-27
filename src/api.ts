@@ -6,7 +6,7 @@ import {
     RestResponse,
     RestResponseError,
     RestResponseSuccess,
-    Source
+    SourceDetails
 } from "./types"
 import { Endpoint } from "./enums"
 import fetch from "isomorphic-fetch"
@@ -39,8 +39,8 @@ export class Api {
         })).data;
     }
 
-    async getSources(): Promise<Source[]> {
-        return (await (this.get<Source[]>('/sources'))).data;
+    async getSources(): Promise<SourceDetails[]> {
+        return (await (this.get<SourceDetails[]>('/sources'))).data;
     }
 
     async get<T>(

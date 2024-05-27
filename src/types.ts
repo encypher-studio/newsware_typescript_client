@@ -154,6 +154,6 @@ export interface CategoryCode {
     description: string
 }
 
-export interface Source {
+export interface SourceDetails {
     code: string
 }

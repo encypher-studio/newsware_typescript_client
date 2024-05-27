@@ -1,6 +1,6 @@
-export {Or, And, Text, Ciks, Tickers, Sources, CategoryCodes} from "./filters";
-export {Api} from "./api"
-export {WsApi} from "./wsApi"
+export { Or, And, Text, Ciks, Tickers, Sources, CategoryCodes } from "./filters";
+export { Api } from "./api"
+export { WsApi } from "./wsApi"
 export {
     News,
     Filter,
@@ -11,6 +11,8 @@ export {
     HistoricalFilter,
     RestResponse,
     RestResponseSuccess,
-    RestResponseError
+    RestResponseError,
+    CategoryCode,
+    SourceDetails
 } from "./types"
-export {Source, WebsocketMethod, WebsocketResponseType, FilterAction, Field} from "./enums"
+export { Source, WebsocketMethod, WebsocketResponseType, FilterAction, Field } from "./enums"
