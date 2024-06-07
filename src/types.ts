@@ -7,6 +7,7 @@ export type RestResponseSuccess<T> = {
     data: T
     pagination?: {
         cursor: (string | number)[]
+        total?: number
     }
 }
 
@@ -15,6 +16,7 @@ export type RestResponseError<T> = {
     data: T
     pagination?: {
         cursor: (string | number)[]
+        total?: number
     }
 }
 
