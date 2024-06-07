@@ -48,10 +48,43 @@ export class Api {
         params?: any,
         errorHandler: (apiResponse: RestResponseError<T>) => void = this.handleError
     ): Promise<RestResponse<T>> {
+        return await this.request("GET", path, params, errorHandler)
+    }
+
+    async delete<T>(
+        path: string,
+        params?: any,
+        errorHandler: (apiResponse: RestResponseError<T>) => void = this.handleError
+    ): Promise<RestResponse<T>> {
+        return await this.request("DELETE", path, params, errorHandler)
+    }
+
+    async post<T, Z>(
+        path: string,
+        body: T,
+        errorHandler: (apiResponse: RestResponseError<Z>) => void = this.handleError
+    ): Promise<RestResponseSuccess<Z>> {
+        return await this.requestWithBody("POST", path, body, errorHandler)
+    }
+
+    async put<T, Z>(
+        path: string,
+        body: T,
+        errorHandler: (apiResponse: RestResponseError<Z>) => void = this.handleError
+    ): Promise<RestResponseSuccess<Z>> {
+        return await this.requestWithBody("PUT", path, body, errorHandler)
+    }
+
+    async request<T>(
+        method: string,
+        path: string,
+        params?: any,
+        errorHandler: (apiResponse: RestResponseError<T>) => void = this.handleError
+    ): Promise<RestResponse<T>> {
         try {
             const endpoint = this.restEndpoint + path + (params ? "?" + new URLSearchParams(params) : '')
             const res = await fetch(endpoint, {
-                method: "GET",
+                method: method,
                 headers: {
                     'content-type': 'application/json',
                     'x-api-key': this.apikey
@@ -67,14 +100,15 @@ export class Api {
         }
     }
 
-    async post<T, Z>(
+    private async requestWithBody<T, Z>(
+        method: string,
         path: string,
         body: T,
         errorHandler: (apiResponse: RestResponseError<Z>) => void = this.handleError
     ): Promise<RestResponseSuccess<Z>> {
         try {
             const res = await fetch(this.restEndpoint + path, {
-                method: "POST",
+                method: method,
                 body: JSON.stringify(body),
                 headers: {
                     'content-type': 'application/json',
