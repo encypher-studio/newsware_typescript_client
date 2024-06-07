@@ -78,11 +78,20 @@ export class Api {
     async request<T>(
         method: string,
         path: string,
-        params?: any,
+        params?: object,
         errorHandler: (apiResponse: RestResponseError<T>) => void = this.handleError
     ): Promise<RestResponse<T>> {
         try {
-            const endpoint = this.restEndpoint + path + (params ? "?" + new URLSearchParams(params) : '')
+            var paramsString: Record<string, string> = {}
+            if (params) {
+                Object.keys(params).forEach(key => {
+                    paramsString[key] = typeof params[key as keyof object] === "object"
+                        ? JSON.stringify(params[key as keyof object])
+                        : params[key as keyof object]
+                })
+            }
+
+            const endpoint = this.restEndpoint + path + (paramsString ? "?" + new URLSearchParams(paramsString) : '')
             const res = await fetch(endpoint, {
                 method: method,
                 headers: {
