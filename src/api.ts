@@ -34,13 +34,18 @@ export class Api {
         return (await this.restHelper.get<News>(`/news/${id}`, undefined, errorHandler)).data
     }
 
-    async getCategoryCodes(source: string): Promise<CategoryCode[]> {
-        return (await this.restHelper.get<CategoryCode[]>('/category-codes', {
-            source
-        })).data;
+    static async getCategoryCodes(source: string, endpoint: EndpointDescription = Endpoint.PRODUCTION): Promise<CategoryCode[]> {
+        return (
+            await new RestHelper(endpoint)
+                .get<CategoryCode[]>('/category-codes', {
+                    source
+                })
+        ).data;
     }
 
-    async getSources(): Promise<SourceDetails[]> {
-        return (await (this.restHelper.get<SourceDetails[]>('/sources'))).data;
+    static async getSources(endpoint: EndpointDescription = Endpoint.PRODUCTION): Promise<SourceDetails[]> {
+        return (
+            await (new RestHelper(endpoint).get<SourceDetails[]>('/sources'))
+        ).data;
     }
 }
