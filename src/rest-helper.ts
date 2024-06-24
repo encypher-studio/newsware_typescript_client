@@ -1,5 +1,5 @@
-import { Endpoint } from "enums"
-import { EndpointDescription, RestResponse, RestResponseError, RestResponseSuccess } from "types"
+import { Endpoint } from "./enums"
+import { EndpointDescription, RestResponse, RestResponseError, RestResponseSuccess } from "./types"
 
 export class RestHelper {
     restEndpoint: string

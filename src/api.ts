@@ -1,5 +1,5 @@
-import { RestHelper } from "rest-helper"
 import { Endpoint } from "./enums"
+import { RestHelper } from "./rest-helper"
 import {
     CategoryCode,
     EndpointDescription,
