@@ -1,5 +1,5 @@
-import {Filter, FilterArray, FiltersMetadata, FilterText, TextOptions} from "./types";
-import {FilterAction, FilterType} from "./enums";
+import { FilterAction, FilterType } from "./enums";
+import { Filter, FilterArray, FiltersMetadata, FilterText, TextOptions } from "./types";
 
 export class Text {
     constructor() {

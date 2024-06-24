@@ -1,7 +1,7 @@
+import { expect } from "chai";
+import { TestsContext } from "../test/setup";
 import { Api } from "./api";
 import { Endpoint } from "./enums";
-import { expect } from "chai"
-import { TestsContext } from "../test/setup";
 import { And, CategoryCodes, Ciks, Or, Sources, Text, Tickers } from "./filters";
 
 describe("Api historical search", () => {

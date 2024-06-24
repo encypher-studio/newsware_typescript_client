@@ -1,6 +1,6 @@
-import { ConnectOptions, SubscribeOptions, WebsocketRequest, WebsocketResponse, } from "./types";
-import WebSocket, { CloseEvent, ErrorEvent, MessageEvent } from "isomorphic-ws"
+import WebSocket, { CloseEvent, ErrorEvent, MessageEvent } from "isomorphic-ws";
 import { Endpoint, WebsocketMethod, WebsocketResponseType } from "./enums";
+import { ConnectOptions, SubscribeOptions, WebsocketRequest, WebsocketResponse, } from "./types";
 
 const defaultOptions: Required<ConnectOptions> = {
     apiKey: "",

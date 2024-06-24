@@ -1,18 +1,9 @@
-export { Or, And, Text, Ciks, Tickers, Sources, CategoryCodes } from "./filters";
-export { Api } from "./api"
-export { WsApi } from "./wsApi"
+export { Api } from "./api";
+export { Field, FilterAction, Source, WebsocketMethod, WebsocketResponseType } from "./enums";
+export { And, CategoryCodes, Ciks, Or, Sources, Text, Tickers } from "./filters";
+export { RestHelper } from "./rest-helper";
 export {
-    News,
-    Filter,
-    TextOptions,
-    WebsocketResponse,
-    WebsocketErrorResponse,
-    ConnectOptions,
-    HistoricalFilter,
-    RestResponse,
-    RestResponseSuccess,
-    RestResponseError,
-    CategoryCode,
-    SourceDetails
-} from "./types"
-export { Source, WebsocketMethod, WebsocketResponseType, FilterAction, Field } from "./enums"
+    CategoryCode, ConnectOptions, Filter, HistoricalFilter, News, RestResponse, RestResponseError, RestResponseSuccess, SourceDetails, TextOptions, WebsocketErrorResponse, WebsocketResponse
+} from "./types";
+export { WsApi } from "./wsApi";
+
