@@ -21,7 +21,7 @@ export type RestResponseError<T> = {
 }
 
 export interface RestError {
-    code: number
+    code: string
     message: string
 }
 
