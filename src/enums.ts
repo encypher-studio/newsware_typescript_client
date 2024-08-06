@@ -2,7 +2,7 @@ import { EndpointDescription } from "./types";
 
 export enum FilterType {
     AND = "and",
-    AND_NOT = "and_not",
+    AND_NOT = "andNot",
     OR = "or",
     TEXT = "text",
     TICKERS = "tickers",
