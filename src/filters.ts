@@ -139,6 +139,13 @@ export const And = (...queries: Filter[]): Filter => {
     }
 }
 
+export const AndNot = (...queries: Filter[]): Filter => {
+    return {
+        type: FilterType.AND_NOT,
+        value: queries
+    }
+}
+
 export const Or = (...queries: Filter[]): Filter => {
     return {
         type: FilterType.OR,

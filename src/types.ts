@@ -45,7 +45,7 @@ export interface FilterText extends TextOptions {
 }
 
 export interface FilterCondition {
-    type: FilterType.AND | FilterType.OR
+    type: FilterType.AND | FilterType.OR | FilterType.AND_NOT
     value: Filter[]
 }
 
