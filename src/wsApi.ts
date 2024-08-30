@@ -122,8 +122,7 @@ export class WsApi {
     }
 
     closeConnection() {
-        this.socket?.removeAllListeners()
-        this.socket?.close()
+        this.socket?.terminate()
         this.closed = true
     }
 }
