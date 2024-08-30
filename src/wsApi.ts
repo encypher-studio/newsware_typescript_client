@@ -18,7 +18,7 @@ export class WsApi {
     socket?: WebSocket
     reconnectMessages: WebsocketRequest[] = []
     private options: Required<ConnectOptions>
-    private closed: boolean = true
+    private closed: boolean = false
     private apiKey: string
 
     constructor(
@@ -38,8 +38,6 @@ export class WsApi {
     }
 
     connect() {
-        this.closed = false
-
         const urlParams = new URLSearchParams({
             apikey: this.apiKey,
         })
@@ -122,7 +120,7 @@ export class WsApi {
     }
 
     closeConnection() {
-        this.socket?.terminate()
+        this.socket?.close()
         this.closed = true
     }
 }
