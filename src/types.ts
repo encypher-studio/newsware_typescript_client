@@ -97,7 +97,7 @@ export interface HistoricalFilter {
     pagination?: Pagination
     publishedAfter?: number
     publishedBefore?: number
-    filter?: Filter
+    filter?: Filter | string
     fields?: Field[]
 }
 
