@@ -90,7 +90,7 @@ export interface ConnectOptions {
 export interface SubscribeOptions {
     subscriptionId: string,
     fields?: Field[],
-    filter?: Filter,
+    filter?: Filter | string,
 }
 
 export interface HistoricalFilter {
@@ -109,7 +109,7 @@ export interface Pagination {
 export type WebsocketRequest = {
     method: WebsocketMethod.SUBSCRIBE
     id: string
-    value: { filter?: Filter, fields?: Field[] }
+    value: { filter?: Filter | string, fields?: Field[] }
 } | {
     method: WebsocketMethod.UNSUBSCRIBE
     id: string
