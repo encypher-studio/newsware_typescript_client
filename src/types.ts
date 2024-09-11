@@ -34,7 +34,7 @@ export interface News {
     publicationTime: string
     receivedTime: string
     creationTime: string
-    categoryCodes: string
+    categoryCodes: string[]
     link?: string
 }
 
