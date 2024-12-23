@@ -35,6 +35,8 @@ export interface News {
     receivedTime: string
     creationTime: string
     categoryCodes: string[]
+    industryCodes: string[]
+    regionCodes: string[]
     link?: string
 }
 
@@ -55,7 +57,7 @@ export interface TextOptions {
 }
 
 export type FilterArray = {
-    type: FilterType.CATEGORY_CODES | FilterType.TICKERS
+    type: FilterType.CODES | FilterType.TICKERS
     action: FilterAction
     value: string[]
 } | {
@@ -143,7 +145,7 @@ export type WebsocketResponse = {
     type: WebsocketResponseType.OK
 }
 
-export type FiltersMetadata = FilterType.TICKERS | FilterType.CATEGORY_CODES | FilterType.SOURCE | FilterType.CIKS
+export type FiltersMetadata = FilterType.TICKERS | FilterType.CODES | FilterType.SOURCE | FilterType.CIKS
 
 export type ApiConfig = {
     endpoint: EndpointDescription

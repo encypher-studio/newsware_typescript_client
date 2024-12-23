@@ -1,4 +1,4 @@
-import { EndpointDescription } from "./types";
+import { EndpointDescription } from "./types"
 
 export enum FilterType {
     AND = "and",
@@ -6,7 +6,7 @@ export enum FilterType {
     OR = "or",
     TEXT = "text",
     TICKERS = "tickers",
-    CATEGORY_CODES = "categoryCodes",
+    CODES = "codes",
     CIKS = "ciks",
     SOURCE = "source"
 }
@@ -54,6 +54,8 @@ export enum Field {
     RECEIVED_TIME = "receivedTime",
     CREATION_TIME = "creationTime",
     CATEGORY_CODES = "categoryCodes",
+    INDUSTRY_CODES = "industryCodes",
+    REGION_CODES = "regionCodes",
     CIKS = "ciks",
     LINK = "link"
 }

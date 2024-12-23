@@ -1,8 +1,8 @@
-import { expect } from "chai";
-import { TestsContext } from "../test/setup";
-import { Api } from "./api";
-import { Endpoint } from "./enums";
-import { And, CategoryCodes, Ciks, Or, Sources, Text, Tickers } from "./filters";
+import { expect } from "chai"
+import { TestsContext } from "../test/setup"
+import { Api } from "./api"
+import { Endpoint } from "./enums"
+import { And, Ciks, Codes, Or, Sources, Text, Tickers } from "./filters"
 
 describe("Api historical search", () => {
     let context: TestsContext
@@ -164,22 +164,22 @@ describe("Api historical search", () => {
         const api = new Api(context.config.apikey, Endpoint.LOCALHOST)
 
         let actualNews = (await api.search({
-            filter: CategoryCodes.any(["categoryCode1", "categoryCode2"])
+            filter: Codes.any(["categoryCode1", "categoryCode2"])
         })).data
         expect(actualNews.length).to.eq(2)
 
         actualNews = (await api.search({
-            filter: CategoryCodes.all(["categoryCode1", "categoryCode2"])
+            filter: Codes.all(["categoryCode1", "categoryCode2"])
         })).data
         expect(actualNews.length).to.eq(0)
 
         actualNews = (await api.search({
-            filter: CategoryCodes.all(["categoryCode1", "categoryCode11"])
+            filter: Codes.all(["categoryCode1", "categoryCode11"])
         })).data
         expect(actualNews.length).to.eq(1)
 
         actualNews = (await api.search({
-            filter: CategoryCodes.exclude(["categoryCode1", "categoryCode2"])
+            filter: Codes.exclude(["categoryCode1", "categoryCode2"])
         })).data
         expect(actualNews.length).to.eq(4)
     })

@@ -1,5 +1,5 @@
-import { FilterAction, FilterType } from "./enums";
-import { Filter, FilterArray, FiltersMetadata, FilterText, TextOptions } from "./types";
+import { FilterAction, FilterType } from "./enums"
+import { Filter, FilterArray, FiltersMetadata, FilterText, TextOptions } from "./types"
 
 export class Text {
     constructor() {
@@ -108,17 +108,17 @@ export class Ciks {
     }
 }
 
-export class CategoryCodes {
+export class Codes {
     static any(value: string | string[]) {
-        return categoryCodes().any(value)
+        return codes().any(value)
     }
 
     static all(value: string | string[]) {
-        return categoryCodes().all(value)
+        return codes().all(value)
     }
 
     static exclude(value: string | string[]) {
-        return categoryCodes().exclude(value)
+        return codes().exclude(value)
     }
 }
 
@@ -161,8 +161,8 @@ const ciks = (): FilterArrayBuilder<number> => {
     return new FilterArrayBuilder<number>(FilterType.CIKS)
 }
 
-const categoryCodes = (): FilterArrayBuilder<string> => {
-    return new FilterArrayBuilder<string>(FilterType.CATEGORY_CODES)
+const codes = (): FilterArrayBuilder<string> => {
+    return new FilterArrayBuilder<string>(FilterType.CODES)
 }
 
 const sources = (): FilterArrayBuilderBasic<string> => {
