@@ -150,15 +150,23 @@ export type ApiConfig = {
     reconnectDelay?: number // In milliseconds
 }
 
-export interface CategoryCode {
+export interface Code {
     code: string
     source: string
+    type: CodeType
     description: string
-    children: CategoryCode[]
+    children: Code[]
 }
 
 export interface SourceDetails {
     code: string
     name: string
     description: string
+}
+
+export enum CodeType {
+    CATEGORY = "category",
+	GROUP    = "group",
+	INDUSTRY = "industry",
+	REGION   = "region"
 }

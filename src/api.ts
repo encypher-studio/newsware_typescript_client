@@ -1,7 +1,8 @@
 import { Endpoint } from "./enums"
 import { RestHelper } from "./rest-helper"
 import {
-    CategoryCode,
+    Code,
+    CodeType,
     EndpointDescription,
     HistoricalFilter,
     News,
@@ -34,11 +35,12 @@ export class Api {
         return (await this.restHelper.get<News>(`/news/${id}`, undefined, errorHandler)).data
     }
 
-    static async getCategoryCodes(source: string, endpoint: EndpointDescription = Endpoint.PRODUCTION): Promise<CategoryCode[]> {
+    static async getCodes(source: string, typ: CodeType, endpoint: EndpointDescription = Endpoint.PRODUCTION): Promise<Code[]> {
         return (
             await new RestHelper(endpoint)
-                .get<CategoryCode[]>('/category-codes', {
-                    source
+                .get<Code[]>('/codes', {
+                    source,
+                    type: typ
                 })
         ).data;
     }
