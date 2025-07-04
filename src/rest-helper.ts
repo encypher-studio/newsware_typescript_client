@@ -3,11 +3,14 @@ import { EndpointDescription, RestResponse, RestResponseError, RestResponseSucce
 
 export class RestHelper {
     restEndpoint: string
+    onError: (message: string) => void
 
     constructor(
         endpoint: EndpointDescription = Endpoint.PRODUCTION,
-        public headers: Record<string, string> = {}
+        public headers: Record<string, string> = {},
+        _onError: (message: string) => void = () => {},
     ) {
+        this.onError = _onError
         this.restEndpoint = endpoint.restProtocol + "://" + endpoint.host + "/api/v3"
         this.headers["content-type"] = "application/json"
     }
@@ -15,45 +18,50 @@ export class RestHelper {
     async get<T>(
         path: string,
         params?: any,
-        errorHandler: (apiResponse: RestResponseError<T>) => void = RestHelper.handleError
+        errorHandler?: (apiResponse: RestResponseError<T>) => void
     ): Promise<RestResponse<T>> {
-        return await this.request("GET", path, params, errorHandler)
+        return await this.request({method: "GET", path, params, errorHandler})
     }
 
     async delete<T>(
         path: string,
         params?: any,
-        errorHandler: (apiResponse: RestResponseError<T>) => void = RestHelper.handleError
+        errorHandler?: (apiResponse: RestResponseError<T>) => void
     ): Promise<RestResponse<T>> {
-        return await this.request("DELETE", path, params, errorHandler)
+        return await this.request({method: "DELETE", path, params, errorHandler})
     }
 
-    async post<T, Z>(
+    async post<T>(
         path: string,
-        body: T,
-        errorHandler: (apiResponse: RestResponseError<Z>) => void = RestHelper.handleError
-    ): Promise<RestResponseSuccess<Z>> {
-        return await this.requestWithBody("POST", path, body, errorHandler)
+        body?: object,
+        options?: {
+            params?: object,
+            errorHandler?: (apiResponse: RestResponseError<T>) => void
+        }
+    ): Promise<RestResponseSuccess<T>> {
+        return await this.request({method: "POST", path, body, ...options})
     }
 
-    async put<T, Z>(
+    async put<T>(
         path: string,
-        body: T,
-        errorHandler: (apiResponse: RestResponseError<Z>) => void = RestHelper.handleError
-    ): Promise<RestResponseSuccess<Z>> {
-        return await this.requestWithBody("PUT", path, body, errorHandler)
+        body?: object,
+        options?: {
+            params?: object,
+            errorHandler?: (apiResponse: RestResponseError<T>) => void
+        }
+    ): Promise<RestResponseSuccess<T>> {
+        return await this.request({method: "PUT", path,  body, ...options})
     }
 
     async request<T>(
-        method: string,
-        path: string,
-        params?: object,
-        errorHandler: (apiResponse: RestResponseError<T>) => void = RestHelper.handleError
+        {method, path, params, body, errorHandler}: RequestOptions<T>
     ): Promise<RestResponse<T>> {
         try {
             var paramsString: Record<string, string> = {}
             if (params) {
                 Object.keys(params).forEach(key => {
+                    if (params[key as keyof object] === undefined) return
+
                     paramsString[key] = typeof params[key as keyof object] === "object"
                         ? JSON.stringify(params[key as keyof object])
                         : params[key as keyof object]
@@ -63,10 +71,11 @@ export class RestHelper {
             const endpoint = this.restEndpoint + path + (paramsString ? "?" + new URLSearchParams(paramsString) : '')
             const res = await fetch(endpoint, {
                 method: method,
+                body: body ? JSON.stringify(body) : undefined,
                 headers: this.headers,
             })
 
-            return RestHelper.handle(res, errorHandler)
+            return this.handle(res, errorHandler)
         } catch (e: any) {
             if (e.cause?.errors?.length > 0) {
                 throw Error(e.cause.errors[0])
@@ -75,42 +84,38 @@ export class RestHelper {
         }
     }
 
-    async requestWithBody<T, Z>(
-        method: string,
-        path: string,
-        body: T,
-        errorHandler: (apiResponse: RestResponseError<Z>) => void = RestHelper.handleError
-    ): Promise<RestResponseSuccess<Z>> {
-        try {
-            const res = await fetch(this.restEndpoint + path, {
-                method: method,
-                body: JSON.stringify(body),
-                headers: this.headers,
-            })
-
-            return RestHelper.handle(res, errorHandler)
-        } catch (e: any) {
-            if (e.cause?.errors?.length > 0) {
-                throw Error(e.cause.errors[0])
-            }
-            throw e
-        }
-    }
-
-    static async handle<T>(res: Response, handleError: (apiResponse: RestResponseError<T>) => void): Promise<RestResponse<T>> {
+    async handle<T>(res: Response, handleError?: (apiResponse: RestResponseError<T>) => void): Promise<RestResponse<T>> {
         const restResponse = await res.json() as RestResponseSuccess<T>
 
         if (res.status < 200 || res.status > 299) {
-            await handleError(restResponse as RestResponseError<T>)
+            handleError ? handleError(restResponse as RestResponseError<T>) : this.errorHandler(restResponse as RestResponseError<T>)
         }
 
         return restResponse
     }
 
-    static handleError<T>(apiResponse: RestResponseError<T>) {
-        throw Error(`Status ${apiResponse.error.code}${apiResponse.error
+    errorHandler(apiResponse: RestResponseError<any>) {
+        const message = RestHelper.messageFromApiError(apiResponse)
+        this.onError(message)
+        throw Error(message)
+    }
+
+    static handleError(apiResponse: RestResponseError<any>) {
+        throw Error(RestHelper.messageFromApiError(apiResponse))
+    }
+
+    private static messageFromApiError(apiResponse: RestResponseError<any>) {
+        return `Status ${apiResponse.error.code}${apiResponse.error
             ? ": " + apiResponse.error.message.charAt(0).toUpperCase() + apiResponse.error.message.slice(1)
             : ""
-            }`)
+        }`
     }
+}
+
+export type RequestOptions<T> = {
+    method: string
+    path: string
+    params?: object
+    body?: object,
+    errorHandler?: (apiResponse: RestResponseError<T>) => void
 }

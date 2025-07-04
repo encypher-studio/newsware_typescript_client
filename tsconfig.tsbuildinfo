@@ -1,0 +1,1 @@
+{"root":["./vite.config.ts","./dist/index.d.ts","./src/api.test.ts","./src/api.ts","./src/enums.ts","./src/filters.ts","./src/index.ts","./src/rest-helper.ts","./src/types.ts","./src/wsapi.ts","./test/setup.ts"],"version":"5.8.3"}

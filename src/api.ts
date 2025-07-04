@@ -28,11 +28,11 @@ export class Api {
     }
 
     async search(filter: HistoricalFilter, errorHandler: (apiResponse: RestResponseError<News[]>) => void = RestHelper.handleError): Promise<RestResponseSuccess<News[]>> {
-        return await this.restHelper.post<HistoricalFilter, News[]>('/news', filter, errorHandler)
+        return await this.restHelper.post<News[]>('/news', filter, {errorHandler})
     }
 
     async getById(id: string, errorHandler: (apiResponse: RestResponseError<News>) => void = RestHelper.handleError): Promise<News> {
-        return (await this.restHelper.get<News>(`/news/${id}`, undefined, errorHandler)).data
+        return (await this.restHelper.get<News>(`/news/${id}`, {errorHandler})).data
     }
 
     static async getCodes(source: string, typ: CodeType, endpoint: EndpointDescription = Endpoint.PRODUCTION): Promise<Code[]> {
